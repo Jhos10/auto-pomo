@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FlowTick</title>
+    <link rel="stylesheet" href="../style/index.css" />
+    <link rel="icon" type="images" href="../images/FlowTickIcon.png" />
+    <!-- <iframe src="../images/FlowTickIcon.png"></iframe> -->
+  </head>
+  <body>
+    <nav class="option-nav">
+      <div class="container-icons">
+        <img src="../images/FlowTickIcon.png" alt="" height="40px" />
+        <h1 class="title-web">FlowTick</h1>
+      </div>
+      <div class="container-buttons">
+        <button class="btn-show-eliminated-list button-option-nav">
+          <img
+            src="../images/icon-delete-list.png"
+            alt=""
+            height="16px"
+            class="icon-button-nav"
+          />Eliminated list
+        </button>
+        <button class="btn-show-performance button-option-nav">
+          <img
+            src="../images/performance-icon.png"
+            alt=""
+            height="16px"
+            class="icon-button-nav"
+          />Performance
+        </button>
+        <button class="btn-show-add button-option-nav">
+          <img
+            src="../images/add-icon.png"
+            alt=""
+            height="16px"
+            class="icon-button-nav"
+          />Add work
+        </button>
+      </div>
+    </nav>
+    <dialog class="add-work-dialog">
+      <div class="content-dilog">
+        <p class="new-task-p">NEW TASK</p>
+        <input
+          type="text"
+          placeholder="What's the focus"
+          class="name-work-input"
+        />
+        <p class="session-p">SESSION LENGTH</p>
+        <div class="options">
+          <button class="option-button-time selected-option-time">25m</button>
+          <button class="option-button-time selected-option-time">59m</button>
+          <button class="option-button-time selected-option-time">90m</button>
+        </div>
+        <div class="div-control-dialog">
+          <button class="cancel-add-work btn-control-dialog">Cancel</button>
+          <button class="add-work btn-control-dialog">Add to my day</button>
+        </div>
+      </div>
+    </dialog>
+    <main>
+      <div class="main-content">
+        <div>
+          <h2 class="subtitle">Today's Focus</h2>
+          <p class="second-sentences">Stay focused</p>
+        </div>
+
+        <section class="cointainer-work-main">
+          <p class="text-light current-session">CURRENT SESSION</p>
+          <p class="time-p">25:00</p>
+          <div class="container-button-control">
+            <button class="button-work-main">
+              <img src="../images/return.png" alt="" height="16px" />
+            </button>
+            <button class="button-main">START</button>
+            <button class="button-work-main">
+              <img src="../images/next-pomo.png" alt="" height="16px" />
+            </button>
+          </div>
+          <p class="text-light motivation-sentence">
+            *The only way to do great work is to love what you do*
+          </p>
+        </section>
+        <section class="container-list-work">
+          <div class="container-tasks">
+            <h3>Active Tasks</h3>
+            <p class="number-works">3</p>
+          </div>
+          <div class="container-work-item-list">
+            <label class="checkbox-wrapper">
+              <input type="checkbox" />
+              <span class="custom-checkbox"></span>
+            </label>
+            <div class="container-work-information">
+              <p class="name-pomo">Refactor landing page hero section</p>
+              <div class="container-other-information">
+                <p class="id-pomo">#Pomo1</p>
+                <p class="time-pomo">
+                  <img src="../images/alarm.png" alt="" height="12px" />25m
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="container-work-item-list">
+            <label class="checkbox-wrapper">
+              <input type="checkbox" />
+              <span class="custom-checkbox"></span>
+            </label>
+            <div>
+              <p class="name-pomo">Refactor landing page hero section</p>
+              <div class="container-other-information">
+                <p class="id-pomo">#Pomo1</p>
+                <p class="time-pomo">
+                  <img src="../images/alarm.png" alt="" height="12px" />25m
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+    <script type="module" src="../views/index.js"></script>
+  </body>
+</html>

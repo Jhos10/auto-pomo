@@ -1,0 +1,379 @@
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  /* border: 1px solid black; */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+}
+
+/* Selector for cointainer icons */
+
+.container-icons {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.container-icons > img {
+  align-items: center;
+}
+
+.title-web {
+  font-size: 23px;
+}
+
+.container-icons > * {
+  cursor: pointer;
+}
+
+/* Style for cointainer buttons nav */
+
+.container-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.container-buttons > button {
+  border: 0px solid black;
+  border-radius: 40px;
+  padding: 7px 10px;
+  cursor: pointer;
+}
+
+.button-option-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-show-add {
+  background-color: rgb(127, 221, 162);
+  color: white;
+}
+
+.btn-show-performance {
+  background-color: rgb(231, 247, 237);
+  color: rgb(127, 221, 162);
+}
+
+.btn-show-eliminated-list {
+  background-color: rgb(247, 171, 171);
+  color: white;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+}
+
+.main-content {
+  /* border: 1px solid black; */
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.subtitle {
+  margin-bottom: 0;
+}
+
+.second-sentences {
+  margin-top: 0;
+  color: #94a3b8;
+}
+
+.cointainer-work-main {
+  padding: 20px 20px;
+  width: 500px;
+  background: #ffffff;
+
+  /* 1️⃣ borde real (muy sutil) */
+  border: 1px solid rgba(46, 211, 183, 0.25);
+
+  /* 2️⃣ forma */
+  border-radius: 28px;
+
+  /* 3️⃣ sombras */
+  box-shadow:
+    /* halo superior verdoso */
+    0 -2px 12px rgba(46, 211, 183, 0.18),
+    /* sombra principal inferior */ 0 18px 40px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.time-p {
+  color: #0f172a;
+  font-size: 90px;
+  font-weight: bolder;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.text-light {
+  color: #94a3b8;
+}
+
+.current-session {
+  margin-bottom: 0;
+  font-size: 10px;
+  font-weight: bolder;
+}
+
+.motivation-sentence {
+  color: rgb(100, 116, 139);
+}
+
+.container-button-control {
+  display: flex;
+  gap: 15px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.button-main {
+  background-color: rgb(46, 211, 183);
+  font-weight: bolder;
+  padding: 20px 20px;
+  border: 1px transparent;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.button-work-main {
+  /* display: block; */
+  background-color: white;
+  border: 1px solid silver;
+  padding: 7px 10px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+/* Task list */
+
+/* container tasks */
+.container-tasks {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.number-works {
+  background-color: lightgray;
+  padding: 3px;
+  border-radius: 10px;
+}
+
+/* container-list-work */
+
+.container-list-work {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
+}
+
+.container-work-item-list {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #e6eef5;
+  border-radius: 20px;
+  gap: 10px;
+}
+
+.selected-task {
+  align-self: center;
+}
+
+.container-work-information {
+  width: 100%;
+  gap: 0;
+}
+
+.name-pomo {
+  margin: 0;
+  padding: 0;
+}
+.container-other-information {
+  display: flex;
+  gap: 7px;
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+  align-items: center;
+}
+
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* ocultamos el checkbox real */
+.checkbox-wrapper input {
+  display: none;
+}
+
+/* caja visual */
+.custom-checkbox {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #cbd5e1; /* gris claro */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.time-pomo {
+  display: flex;
+  flex-direction: row;
+  gap: 2px;
+  align-items: center;
+}
+
+/* cuando está marcado */
+.checkbox-wrapper input:checked + .custom-checkbox {
+  background-color: #2ed3b7;
+  border-color: #2ed3b7;
+  box-shadow: 0 4px 10px rgba(46, 211, 183, 0.35);
+}
+
+/* check */
+.checkbox-wrapper input:checked + .custom-checkbox::after {
+  content: "✓";
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* hover */
+.checkbox-wrapper:hover .custom-checkbox {
+  border-color: #2ed3b7;
+}
+
+/* Dialog add to add work element */
+.add-work-dialog {
+  width: 420px;
+  padding: 24px;
+  border-radius: 20px;
+  border: none;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+}
+
+.add-work-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(5px);
+}
+
+.content-dialog {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Estilo dialog elements */
+
+.new-task-p {
+  color: #00c2a8;
+  font-size: 10px;
+  font-weight: bolder;
+}
+
+.name-work-input {
+  width: 100%;
+  font-size: 24px;
+  font-weight: 600;
+  border: none;
+  outline: none;
+  padding: 12px 0;
+  color: #2e3a59;
+}
+
+.name-work-input .name-work-input::placeholder {
+  color: #c5d1de;
+  font-weight: 500;
+}
+
+.session-p {
+  color: #7b8da6;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.options {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+/* Remove this clases */
+.selected-option-time {
+  background: #e6faf7;
+  border: 1px solid #00c2a8;
+  color: #00c2a8;
+  border-radius: 10px;
+  padding: 10px;
+  width: 80px;
+  height: 40px;
+}
+.option-button-time {
+  background-color: #f8fafc;
+  color: #2e3a59;
+  border: 1px solid #e3eaf2;
+  border-radius: 10px;
+  padding: 10px;
+  width: 80px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.div-control-dialog {
+  margin: 10px 0;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.btn-control-dialog {
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+}
+
+.cancel-add-work {
+  color: white;
+  background-color: lightcoral;
+}
+
+.cancel-add-work:hover {
+  background-color: #f06b6b; /* lightcoral un poco más oscuro */
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(240, 107, 107, 0.35);
+}
+
+.add-work {
+  color: #ffffff;
+  background-color: #00c2a8;
+}
+
+.add-work:hover {
+  background-color: #27c1a7; /* un poco más oscuro */
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(46, 211, 183, 0.35);
+}
