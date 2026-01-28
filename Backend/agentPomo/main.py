@@ -6,7 +6,7 @@ from utils import uploadFileAudio
 
 app = FastAPI()
 
-# os.makedirs(UPLOAD_DIR, exist_ok=True)
+
 @app.get("/")
 def read_root():
   iaModel = ModelIA()
@@ -22,6 +22,11 @@ def read_root():
 
 @app.post("/upload-audio")
 async def receive_audio(file: UploadFile = File(...)):
+  iaModel = ModelIA()
   informationFile = uploadFileAudio(file=file)
-
+  iaAudio = Whisper(informationFile['filename'])
+  text = iaAudio.audiotoText()
+  pomoJson = iaModel.textToPomodoro(text)
+  return pomoJson
+  
 
