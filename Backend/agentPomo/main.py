@@ -1,5 +1,6 @@
 from fastapi import FastAPI, UploadFile, File
 from transcribe import Whisper
+from mistral import ModelIA
 import shutil
 import os
 
@@ -8,9 +9,14 @@ UPLOAD_DIR = "agentPomo/audio"
 # os.makedirs(UPLOAD_DIR, exist_ok=True)
 @app.get("/")
 def read_root():
-  firstAudio = Whisper('Grabacion.mp3')
+  iaModel = ModelIA()
+  firstAudio = Whisper('Grabación (2).m4a')
+
   text = firstAudio.audiotoText()
-  return {"text": text}
+
+  pomoJson = iaModel.textToPomodoro(text)
+  return pomoJson
+
 
 
 
