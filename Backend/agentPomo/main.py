@@ -1,11 +1,11 @@
 from fastapi import FastAPI, UploadFile, File
 from transcribe import Whisper
 from mistral import ModelIA
-import shutil
-import os
+from utils import uploadFileAudio
+
 
 app = FastAPI()
-UPLOAD_DIR = "agentPomo/audio"
+
 # os.makedirs(UPLOAD_DIR, exist_ok=True)
 @app.get("/")
 def read_root():
@@ -22,13 +22,6 @@ def read_root():
 
 @app.post("/upload-audio")
 async def receive_audio(file: UploadFile = File(...)):
+  informationFile = uploadFileAudio(file=file)
 
-  file_path = os.path.join(UPLOAD_DIR, file.filename)
-  
-  with open(file_path, "wb") as buffer:
-    shutil.copyfileobj(file.file,buffer)
 
-  return {
-    "filename": file.filename,
-    "meessage": "Audio recibido y guardado con éxito"
-  }

@@ -51,7 +51,6 @@ class ModelIA:
 
             content = response["message"]["content"]
 
-            # 🔥 LIMPIEZA CRÍTICA (esto es lo que te faltaba)
             content = content.strip()
             content = re.sub(r"```json|```", "", content)
             content = re.sub(r"//.*", "", content)

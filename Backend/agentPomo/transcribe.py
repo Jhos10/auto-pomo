@@ -11,8 +11,8 @@ class Whisper:
     command = [
             "ffmpeg", "-y",
             "-i", f'agentPomo/audio/{self.audioPath}',
-            "-ar", "16000",          # 👈 sample rate correcto para Whisper
-            "-ac", "1",              # 👈 mono
+            "-ar", "16000",          
+            "-ac", "1",              
             "-af", "loudnorm=I=-16:TP=-1.5:LRA=11",
             outputPath
         ]
