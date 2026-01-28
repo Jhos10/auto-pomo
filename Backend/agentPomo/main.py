@@ -1,5 +1,5 @@
 from fastapi import FastAPI, UploadFile, File
-from whisper import Whisper
+from transcribe import Whisper
 import shutil
 import os
 
@@ -9,8 +9,8 @@ UPLOAD_DIR = "agentPomo/audio"
 @app.get("/")
 def read_root():
   firstAudio = Whisper('Grabacion.mp3')
-  firstAudio.normalizeAudio()
-  return {"Hello": "World"}
+  text = firstAudio.audiotoText()
+  return {"text": text}
 
 
 
