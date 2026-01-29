@@ -122,6 +122,91 @@
         </section>
       </div>
     </main>
+
+    <!-- Floating audio recorder button (fixed, stays visible while scrolling) -->
+    <button
+      id="audio-record-btn"
+      class="floating-audio-btn"
+      aria-label="Grabar audio"
+      title="Grabar audio"
+    >
+      <!-- Inline SVG microphone -->
+      <svg
+        width="28"
+        height="28"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3z"
+          stroke="#fff"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M19 11v1a7 7 0 0 1-14 0v-1"
+          stroke="#fff"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M12 19v4"
+          stroke="#fff"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </button>
+
+    <!-- Audio recorder modal -->
+    <div
+      id="audio-modal"
+      class="audio-modal hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="audio-modal-title"
+    >
+      <div class="modal-content">
+        <header class="modal-header">
+          <h3 id="audio-modal-title">Grabar audio</h3>
+          <button
+            id="close-audio-modal"
+            class="close-modal"
+            aria-label="Cerrar"
+          >
+            ✕
+          </button>
+        </header>
+        <div class="modal-body">
+          <p class="helper-text">
+            Permite el micrófono para comenzar a grabar.
+          </p>
+          <div class="recorder-controls">
+            <button id="record-toggle" class="record-btn">Grabar</button>
+            <span id="record-timer" class="record-timer">00:00</span>
+          </div>
+          <div id="playback" class="playback hidden">
+            <audio id="audio-playback" controls></audio>
+            <a
+              id="download-audio"
+              class="download-link"
+              href="#"
+              download="recording.webm"
+              >Descargar</a
+            >
+            <button id="re-record" class="re-record">Volver a grabar</button>
+          </div>
+          <p class="record-note">
+            El audio se guarda localmente y puedes descargarlo.
+          </p>
+        </div>
+      </div>
+    </div>
+
     <script type="module" src="../views/index.js"></script>
   </body>
 </html>
