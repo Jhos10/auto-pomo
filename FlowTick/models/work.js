@@ -2,7 +2,7 @@ class Work {
   ready = null;
   constructor(name, lenList, time) {
     this.name = name;
-    this.id = lenList + 1;
+    this.id = lenList;
     this.time = time;
     // this.ready = null;
   }
