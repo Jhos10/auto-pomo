@@ -4,7 +4,8 @@ class List {
   }
 
   addWork(work) {
-    this.listWork.add(work);
+    this.listWork.push(work);
+    this.saveStorage();
   }
 
   eliminatedWork(idWork) {
@@ -14,15 +15,15 @@ class List {
   }
 
   getElementById(idWork) {
-    for (let i = 0; i < this.listWord.length; i++) {
+    for (let i = 0; i < this.listWork.length; i++) {
       if (this.listWork[i].id === idWork) {
-        return this.listWord[i];
+        return this.listWork[i];
       }
     }
   }
 
   loadedStorage() {
-    this.listWork = JSON.parse(localStorage.getItem("listWork")) || null;
+    this.listWork = JSON.parse(localStorage.getItem("listWork")) || [];
   }
 
   saveStorage() {

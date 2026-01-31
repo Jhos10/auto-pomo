@@ -377,3 +377,9 @@ main {
   transform: translateY(-1px);
   box-shadow: 0 10px 24px rgba(46, 211, 183, 0.35);
 }
+
+.btn-selected-time {
+  background: #e6faf7;
+  border: 1px solid #00c2a8;
+  color: #00c2a8;
+}
