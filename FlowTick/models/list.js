@@ -3,6 +3,8 @@ import Work from "./work.js";
 class List {
   constructor() {
     this.listWork = [];
+    this.listWorkNulls = null;
+    this.getWorksNulls();
   }
 
   addWork(work) {
@@ -33,9 +35,18 @@ class List {
     }
   }
 
+  getWorksNulls() {
+    this.listWorkNulls = this.listWork.filter((work) => {
+      return work.ready === null;
+    });
+    // console.log(this.listWorkNulls);
+    return this.listWorkNulls;
+  }
+
   loadedStorage() {
     this.listWork = JSON.parse(localStorage.getItem("listWork")) || [];
     this.listWork = this.listWork.map(Work.fromJSON);
+    this.getWorksNulls();
   }
 
   saveStorage() {

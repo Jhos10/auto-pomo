@@ -14,6 +14,10 @@ class Work {
     return this.ready;
   }
 
+  isIncompleted() {
+    this.ready = "Incompleted";
+  }
+
   static fromJSON(work) {
     const convertedWork = new Work(work.name, work.id, work.time);
     return convertedWork;

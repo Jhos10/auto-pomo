@@ -11,32 +11,34 @@ function renderList() {
     <h3>Active Tasks</h3>
     <p class="number-works">${workList.listWork.length}</p>
   </div>`;
-  workList.listWork.forEach((work, index) => {
-    if (index !== 0)
+  console.log(workList.listWorkNulls);
+  workList.listWorkNulls.forEach((work, index) => {
+    if (index !== 0) {
       htmlAcumulator += `
-      <div class="container-work-item-list">
-        <label class="checkbox-wrapper">
-          <input type="checkbox" />
-          <span class="custom-checkbox"></span>
-        </label>
-        <div class="container-work-information">
-          <p class="name-pomo">${work.name}</p>
-          <div class="container-other-information">
-            <p class="id-pomo">#Pomo${work.id}</p>
-            <p class="time-pomo">
-              <img src="../images/alarm.png" alt="" height="12px" />${work.time}m
-            </p>
+        <div class="container-work-item-list">
+          <label class="checkbox-wrapper">
+            <input type="checkbox" />
+            <span class="custom-checkbox"></span>
+          </label>
+          <div class="container-work-information">
+            <p class="name-pomo">${work.name}</p>
+            <div class="container-other-information">
+              <p class="id-pomo">#Pomo${work.id}</p>
+              <p class="time-pomo">
+                <img src="../images/alarm.png" alt="" height="12px" />${work.time}m
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-    `;
+      `;
+    }
   });
   const containerListWork = document.querySelector(".container-list-work");
   containerListWork.innerHTML = htmlAcumulator;
 }
 
 function renderWorkMain() {
-  const mainWork = workList.getElementById(0);
+  const mainWork = workList.getFirstItemReadyNull();
   const mainWorkDOM = document.querySelector(".cointainer-work-main");
   mainWorkDOM.innerHTML = `
     <p class="text-light current-session">CURRENT SESSION: ${mainWork.name}</p>
