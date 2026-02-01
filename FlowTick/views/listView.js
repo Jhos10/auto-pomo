@@ -113,17 +113,20 @@ export function loadedEventsMainPage() {
   const containerMainDOM = document.querySelector(".main-content");
   containerMainDOM.addEventListener("click", (event) => {
     if (
-      event.target.classList.contains("button-main") &&
+      (event.target.classList.contains("button-main") ||
+        event.target.classList.contains("icon-stop")) &&
       startTimer === false
     ) {
       idSetInterval = startClock();
       startTimer = true;
-      event.target.innerHTML = "⏸️";
+      event.target.innerHTML =
+        "<img class='icon-stop' src='../images/boton-de-pausa.png' height='10px'/>";
     } else if (
-      event.target.classList.contains("button-main") &&
+      (event.target.classList.contains("button-main") ||
+        event.target.classList.contains("icon-stop")) &&
       startTimer === true
     ) {
-      event.target.innerHTML = "Start";
+      event.target.closest(".button-main").innerHTML = "Start";
       startTimer = false;
       pauseClock(idSetInterval);
     }
@@ -134,17 +137,20 @@ function pauseClock(idSetInterval) {
   clearInterval(idSetInterval);
 }
 
+let startNewHomework = true;
 function startClock() {
   const startHomeWork = workList.getFirstItemReadyNull();
   // console.log(startHomeWork);
   const copyTime = startHomeWork.timer.split(":");
   let [minutes, seconds] = copyTime;
   const clock = document.querySelector(".time-p");
-  let changeSeconds = false;
+  let changeSeconds = startNewHomework === true ? false : true;
+  // let changeSeconds = false;
   chronometer = setInterval(() => {
     if (seconds === "00" && changeSeconds === false) {
       seconds = 60 - 1;
       changeSeconds = true;
+      startNewHomework = false;
     } else {
       seconds = Number(seconds);
       seconds -= 1;
@@ -155,6 +161,7 @@ function startClock() {
     if (seconds === "00" && minutes == "00") {
       clearInterval(chronometer);
       startHomeWork.ready = true;
+      startNewHomework = true;
       renderPage();
     } else if (seconds === "00" && changeSeconds === true) {
       minutes = Number(minutes);
