@@ -1,9 +1,12 @@
+import Work from "./work.js";
+
 class List {
   constructor() {
     this.listWork = [];
   }
 
   addWork(work) {
+    console.log(work instanceof Work);
     this.listWork.push(work);
     this.saveStorage();
   }
@@ -32,6 +35,7 @@ class List {
 
   loadedStorage() {
     this.listWork = JSON.parse(localStorage.getItem("listWork")) || [];
+    this.listWork = this.listWork.map(Work.fromJSON);
   }
 
   saveStorage() {

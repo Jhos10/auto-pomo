@@ -42,8 +42,8 @@ function renderWorkMain() {
     <p class="text-light current-session">CURRENT SESSION: ${mainWork.name}</p>
     <p class="time-p">${mainWork.time}</p>
     <div class="container-button-control">
-      <button class="button-work-main">
-        <img src="../images/return.png" alt="" height="16px" />
+      <button class="btn-return-start button-work-main">
+        <img class="btn-return-start" src="../images/return.png" alt="" height="16px" />
       </button>
       <button class="button-main">START</button>
       <button class="button-work-main">
@@ -90,7 +90,6 @@ export function handlerAddWorkDialog() {
   buttonShowDialog.addEventListener("click", () => dialogAddWork.showModal());
   buttonCancelDialog.addEventListener("click", () => dialogAddWork.close());
   buttonAddWork.addEventListener("click", () => {
-    console.log("EXECUTE FUNCTION");
     const { nameNewWork, lenList, timeNewWork } = getInformationNewWork();
     const newWork = new Work(nameNewWork, lenList, timeNewWork);
     workList.addWork(newWork);
@@ -110,6 +109,7 @@ export function handlerAddWorkDialog() {
 }
 let idSetInterval = null;
 export function loadedEventsMainPage() {
+  const firstWork = workList.getFirstItemReadyNull();
   const containerMainDOM = document.querySelector(".main-content");
   containerMainDOM.addEventListener("click", (event) => {
     if (
@@ -129,8 +129,15 @@ export function loadedEventsMainPage() {
       event.target.closest(".button-main").innerHTML = "Start";
       startTimer = false;
       pauseClock(idSetInterval);
+    } else if (event.target.classList.contains("btn-return-start")) {
+      firstWork.returnTimerOriginalValue();
+      returnValueClock(firstWork);
     }
   });
+}
+
+function returnValueClock(currentlyWork) {
+  document.querySelector(".time-p").innerHTML = currentlyWork.timer;
 }
 
 function pauseClock(idSetInterval) {
@@ -140,7 +147,6 @@ function pauseClock(idSetInterval) {
 let startNewHomework = true;
 function startClock() {
   const startHomeWork = workList.getFirstItemReadyNull();
-  // console.log(startHomeWork);
   const copyTime = startHomeWork.timer.split(":");
   let [minutes, seconds] = copyTime;
   const clock = document.querySelector(".time-p");
@@ -177,7 +183,6 @@ function startClock() {
 }
 
 export function renderPage() {
-  console.log(workList.listWork);
   const cartMain = document.querySelector(".cointainer-work-main");
   const listWorkDOM = document.querySelector(".container-list-work");
   if (workList.listWork.length === 0) {
