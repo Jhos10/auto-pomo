@@ -1,6 +1,10 @@
 import workList from "../models/list.js";
 import Work from "../models/work.js";
 import { normalizeTimeWork } from "../utils/utils.js";
+
+// Variable for clock of main work, indicate the play of clock or stop of clock.
+let startTimer = false;
+let chronometer = null;
 function renderList() {
   let htmlAcumulator = `
   <div class="container-tasks">
@@ -104,24 +108,40 @@ export function handlerAddWorkDialog() {
     }
   });
 }
-
+let idSetInterval = null;
 export function loadedEventsMainPage() {
   const containerMainDOM = document.querySelector(".main-content");
   containerMainDOM.addEventListener("click", (event) => {
-    if (event.target.classList.contains("button-main")) {
-      startClock();
+    if (
+      event.target.classList.contains("button-main") &&
+      startTimer === false
+    ) {
+      idSetInterval = startClock();
+      startTimer = true;
+      event.target.innerHTML = "⏸️";
+    } else if (
+      event.target.classList.contains("button-main") &&
+      startTimer === true
+    ) {
+      event.target.innerHTML = "Start";
+      startTimer = false;
+      pauseClock(idSetInterval);
     }
   });
 }
 
+function pauseClock(idSetInterval) {
+  clearInterval(idSetInterval);
+}
+
 function startClock() {
   const startHomeWork = workList.getFirstItemReadyNull();
-  console.log(startHomeWork);
+  // console.log(startHomeWork);
   const copyTime = startHomeWork.time.split(":");
   let [minutes, seconds] = copyTime;
   const clock = document.querySelector(".time-p");
   let changeSeconds = false;
-  let chronometer = setInterval(() => {
+  chronometer = setInterval(() => {
     if (seconds === "00" && changeSeconds === false) {
       seconds = 60 - 1;
       changeSeconds = true;
@@ -145,6 +165,7 @@ function startClock() {
     }
     clock.innerHTML = minutes + ":" + seconds;
   }, 1000);
+  return chronometer;
 }
 
 export function renderPage() {
