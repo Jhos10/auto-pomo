@@ -22,6 +22,14 @@ class List {
     }
   }
 
+  getFirstItemReadyNull() {
+    for (let i = 0; i < this.listWork.length; i++) {
+      if (this.listWork[i].ready === null) {
+        return this.listWork[i];
+      }
+    }
+  }
+
   loadedStorage() {
     this.listWork = JSON.parse(localStorage.getItem("listWork")) || [];
   }

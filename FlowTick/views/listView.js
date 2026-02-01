@@ -2,7 +2,6 @@ import workList from "../models/list.js";
 import Work from "../models/work.js";
 import { normalizeTimeWork } from "../utils/utils.js";
 function renderList() {
-  console.log(workList.listWork);
   let htmlAcumulator = `
   <div class="container-tasks">
     <h3>Active Tasks</h3>
@@ -106,7 +105,50 @@ export function handlerAddWorkDialog() {
   });
 }
 
+export function loadedEventsMainPage() {
+  const containerMainDOM = document.querySelector(".main-content");
+  containerMainDOM.addEventListener("click", (event) => {
+    if (event.target.classList.contains("button-main")) {
+      startClock();
+    }
+  });
+}
+
+function startClock() {
+  const startHomeWork = workList.getFirstItemReadyNull();
+  console.log(startHomeWork);
+  const copyTime = startHomeWork.time.split(":");
+  let [minutes, seconds] = copyTime;
+  const clock = document.querySelector(".time-p");
+  let changeSeconds = false;
+  let chronometer = setInterval(() => {
+    if (seconds === "00" && changeSeconds === false) {
+      seconds = 60 - 1;
+      changeSeconds = true;
+    } else {
+      seconds = Number(seconds);
+      seconds -= 1;
+      seconds =
+        seconds < 10 ? String(seconds).padStart(2, "0") : String(seconds);
+    }
+
+    if (seconds === "00" && minutes == "00") {
+      clearInterval(chronometer);
+      startHomeWork.ready = true;
+      renderPage();
+    } else if (seconds === "00" && changeSeconds === true) {
+      minutes = Number(minutes);
+      minutes -= 1;
+      minutes =
+        minutes < 10 ? String(minutes).padStart(2, "0") : String(minutes);
+      changeSeconds = false;
+    }
+    clock.innerHTML = minutes + ":" + seconds;
+  }, 1000);
+}
+
 export function renderPage() {
+  console.log(workList.listWork);
   const cartMain = document.querySelector(".cointainer-work-main");
   const listWorkDOM = document.querySelector(".container-list-work");
   if (workList.listWork.length === 0) {

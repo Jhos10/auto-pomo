@@ -1,8 +1,13 @@
-import { handlerAddWorkDialog, renderPage } from "./listView.js";
+import {
+  handlerAddWorkDialog,
+  loadedEventsMainPage,
+  renderPage,
+} from "./listView.js";
 
 function initPage() {
   handlerAddWorkDialog();
   renderPage();
+  loadedEventsMainPage();
 }
 
 initPage();

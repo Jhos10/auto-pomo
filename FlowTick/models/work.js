@@ -4,7 +4,7 @@ class Work {
     this.name = name;
     this.id = lenList;
     this.time = time;
-    // this.ready = null;
+    this.ready = null;
   }
 
   isReady() {
