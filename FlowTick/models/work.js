@@ -5,6 +5,7 @@ class Work {
     this.id = lenList;
     this.time = time;
     this.ready = null;
+    this.timer = time;
   }
 
   isReady() {

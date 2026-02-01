@@ -137,7 +137,7 @@ function pauseClock(idSetInterval) {
 function startClock() {
   const startHomeWork = workList.getFirstItemReadyNull();
   // console.log(startHomeWork);
-  const copyTime = startHomeWork.time.split(":");
+  const copyTime = startHomeWork.timer.split(":");
   let [minutes, seconds] = copyTime;
   const clock = document.querySelector(".time-p");
   let changeSeconds = false;
@@ -164,6 +164,7 @@ function startClock() {
       changeSeconds = false;
     }
     clock.innerHTML = minutes + ":" + seconds;
+    startHomeWork.timer = minutes + ":" + seconds;
   }, 1000);
   return chronometer;
 }
