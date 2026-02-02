@@ -3,8 +3,6 @@ import Work from "../models/work.js";
 import { normalizeTimeWork } from "../utils/utils.js";
 
 // Variable for clock of main work, indicate the play of clock or stop of clock.
-let startTimer = false;
-let chronometer = null;
 function renderList() {
   let htmlAcumulator = `
   <div class="container-tasks">
@@ -46,7 +44,7 @@ function renderWorkMain() {
       <button class="btn-return-start button-work-main">
         <img class="btn-return-start" src="../images/return.png" alt="" height="16px" />
       </button>
-      <button class="button-main">START</button>
+      <button class="button-main js-start-clock-btn">START</button>
       <button class="btn-next-song button-work-main">
         <img class="btn-next-song" src="../images/next-pomo.png" alt="" height="16px" />
       </button>
@@ -110,6 +108,7 @@ export function handlerAddWorkDialog() {
 }
 
 let idSetInterval = null;
+let startTimer = false;
 export function loadedEventsMainPage() {
   const firstWork = workList.getFirstItemReadyNull();
   const containerMainDOM = document.querySelector(".main-content");
@@ -128,7 +127,7 @@ export function loadedEventsMainPage() {
         event.target.classList.contains("icon-stop")) &&
       startTimer === true
     ) {
-      event.target.closest(".button-main").innerHTML = "Start";
+      event.target.closest(".button-main").innerHTML = "START";
       startTimer = false;
       pauseClock(idSetInterval);
     } else if (event.target.classList.contains("btn-return-start")) {
@@ -150,7 +149,7 @@ function returnValueClock(currentlyWork) {
 function pauseClock(idSetInterval) {
   clearInterval(idSetInterval);
 }
-
+let chronometer = null;
 let startNewHomework = true;
 function startClock() {
   const startHomeWork = workList.getFirstItemReadyNull();
@@ -158,7 +157,6 @@ function startClock() {
   let [minutes, seconds] = copyTime;
   const clock = document.querySelector(".time-p");
   let changeSeconds = startNewHomework === true ? false : true;
-  // let changeSeconds = false;
   chronometer = setInterval(() => {
     if (seconds === "00" && changeSeconds === false) {
       seconds = 60 - 1;
@@ -172,11 +170,15 @@ function startClock() {
     }
 
     if (seconds === "00" && minutes == "00") {
-      clearInterval(chronometer);
+      clearInterval(idSetInterval);
       startHomeWork.isReady();
       workList.saveStorage();
       startNewHomework = true;
+      startTimer = true;
       renderPage();
+      idSetInterval = startClock();
+      document.querySelector(".js-start-clock-btn").innerHTML =
+        "<img class='icon-stop' src='../images/boton-de-pausa.png' height='10px'/>";
     } else if (seconds === "00" && changeSeconds === true) {
       minutes = Number(minutes);
       minutes -= 1;
