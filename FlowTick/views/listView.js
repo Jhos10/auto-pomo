@@ -173,7 +173,8 @@ function startClock() {
 
     if (seconds === "00" && minutes == "00") {
       clearInterval(chronometer);
-      startHomeWork.ready = true;
+      startHomeWork.isReady();
+      workList.saveStorage();
       startNewHomework = true;
       renderPage();
     } else if (seconds === "00" && changeSeconds === true) {
