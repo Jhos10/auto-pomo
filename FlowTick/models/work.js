@@ -1,25 +1,25 @@
 class Work {
   ready = null;
-  constructor(name, lenList, time) {
+  constructor(name, lenList, time, ready = null) {
     this.name = name;
     this.id = lenList;
     this.time = time;
-    this.ready = null;
+    this.ready = ready;
     this.timer = time;
   }
 
   isReady() {
-    this.ready === null ? (this.ready = true) : (this.ready = null);
+    this.ready === null ? (this.ready = "completed") : (this.ready = null);
 
     return this.ready;
   }
 
   isIncompleted() {
-    this.ready = "Incompleted";
+    this.ready = "incompleted";
   }
 
   static fromJSON(work) {
-    const convertedWork = new Work(work.name, work.id, work.time);
+    const convertedWork = new Work(work.name, work.id, work.time, work.ready);
     return convertedWork;
   }
 

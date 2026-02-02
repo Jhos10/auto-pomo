@@ -11,7 +11,6 @@ function renderList() {
     <h3>Active Tasks</h3>
     <p class="number-works">${workList.listWork.length}</p>
   </div>`;
-  console.log(workList.listWorkNulls);
   workList.listWorkNulls.forEach((work, index) => {
     if (index !== 0) {
       htmlAcumulator += `
@@ -48,8 +47,8 @@ function renderWorkMain() {
         <img class="btn-return-start" src="../images/return.png" alt="" height="16px" />
       </button>
       <button class="button-main">START</button>
-      <button class="button-work-main">
-        <img src="../images/next-pomo.png" alt="" height="16px" />
+      <button class="btn-next-song button-work-main">
+        <img class="btn-next-song" src="../images/next-pomo.png" alt="" height="16px" />
       </button>
     </div>
     <p class="text-light motivation-sentence">
@@ -109,6 +108,7 @@ export function handlerAddWorkDialog() {
     }
   });
 }
+
 let idSetInterval = null;
 export function loadedEventsMainPage() {
   const firstWork = workList.getFirstItemReadyNull();
@@ -134,6 +134,11 @@ export function loadedEventsMainPage() {
     } else if (event.target.classList.contains("btn-return-start")) {
       firstWork.returnTimerOriginalValue();
       returnValueClock(firstWork);
+    } else if (event.target.classList.contains("btn-next-song")) {
+      const workMain = workList.getFirstItemReadyNull();
+      workMain.isReady();
+      workList.saveStorage();
+      renderPage();
     }
   });
 }
@@ -187,7 +192,7 @@ function startClock() {
 export function renderPage() {
   const cartMain = document.querySelector(".cointainer-work-main");
   const listWorkDOM = document.querySelector(".container-list-work");
-  if (workList.listWork.length === 0) {
+  if (workList.listWork.length === 0 || !workList.getFirstItemReadyNull()) {
     cartMain.innerHTML = "Don't have Works";
     listWorkDOM.style.display = "none";
   } else {

@@ -8,7 +8,6 @@ class List {
   }
 
   addWork(work) {
-    console.log(work instanceof Work);
     this.listWork.push(work);
     this.saveStorage();
   }
@@ -33,13 +32,13 @@ class List {
         return this.listWork[i];
       }
     }
+    return false;
   }
 
   getWorksNulls() {
     this.listWorkNulls = this.listWork.filter((work) => {
       return work.ready === null;
     });
-    // console.log(this.listWorkNulls);
     return this.listWorkNulls;
   }
 
