@@ -112,6 +112,7 @@ let startTimer = false;
 export function loadedEventsMainPage() {
   const firstWork = workList.getFirstItemReadyNull();
   const containerMainDOM = document.querySelector(".main-content");
+  const navBarDOM = document.querySelector(".option-nav");
   containerMainDOM.addEventListener("click", (event) => {
     if (
       (event.target.classList.contains("button-main") ||
@@ -138,6 +139,16 @@ export function loadedEventsMainPage() {
       workMain.isReady();
       workList.saveStorage();
       renderPage();
+    }
+  });
+  navBarDOM.addEventListener("click", (event) => {
+    if (event.target.classList.contains("js-btn-eliminated-list")) {
+      console.log("Click in eliminated list");
+      workList.eliminatedList();
+      renderWorkMain();
+      renderList();
+      cartMain.innerHTML = "Don't have Works";
+      listWorkDOM.style.display = "none";
     }
   });
 }

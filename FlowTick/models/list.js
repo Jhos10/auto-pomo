@@ -51,6 +51,12 @@ class List {
   saveStorage() {
     localStorage.setItem("listWork", JSON.stringify(this.listWork));
   }
+
+  eliminatedList() {
+    this.listWork = [];
+    this.getWorksNulls();
+    localStorage.clear("listWork");
+  }
 }
 
 const workList = new List();
