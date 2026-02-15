@@ -13,9 +13,16 @@ class List {
   }
 
   eliminatedWork(idWork) {
-    this.listWork = this.listWord.filter((work) => {
-      work.id !== idWork ? true : false;
+    console.log(idWork);
+    this.listWork.forEach((value) => {
+      if (value.id === Number(idWork)) {
+        console.log("Hey ingreso en el if");
+        value.ready = "Eliminated";
+      }
     });
+    console.log(this.listWork);
+    localStorage.setItem("listWork", JSON.stringify(this.listWork));
+    return true;
   }
 
   getElementById(idWork) {

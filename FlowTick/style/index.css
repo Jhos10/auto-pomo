@@ -193,6 +193,21 @@ main {
   gap: 10px;
 }
 
+.eliminated-work {
+  padding: 10px;
+  display: none;
+}
+
+.js-eliminated-work {
+  display: block;
+}
+
+.js-selected-container-work-item-list {
+  background-color: #f0f9f8;
+  border: 2px solid #26c6b2;
+  border-radius: 30px; /* Bordes muy redondeados */
+}
+
 .selected-task {
   align-self: center;
 }

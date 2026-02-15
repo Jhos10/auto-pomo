@@ -10,11 +10,11 @@ function renderList() {
     <p class="number-works">${workList.listWork.length}</p>
   </div>`;
   workList.listWorkNulls.forEach((work, index) => {
-    if (index !== 0) {
+    if (index !== 0 && work.ready === null) {
       htmlAcumulator += `
         <div class="container-work-item-list">
-          <label class="checkbox-wrapper">
-            <input type="checkbox" />
+          <label class="checkbox-wrapper" for="work-${work.id}">
+            <input type="checkbox" class="js-select-work-input" id="work-${work.id}"/>
             <span class="custom-checkbox"></span>
           </label>
           <div class="container-work-information">
@@ -25,6 +25,12 @@ function renderList() {
                 <img src="../images/alarm.png" alt="" height="12px" />${work.time}m
               </p>
             </div>
+          </div>
+          <div>
+            <img src="../images/bote-de-basura.png"
+              width="18px"
+              class="eliminated-work js-btn-eliminated"
+              data-index="${work.id}">
           </div>
         </div>
       `;
@@ -109,6 +115,7 @@ export function handlerAddWorkDialog() {
 
 let idSetInterval = null;
 let startTimer = false;
+
 export function loadedEventsMainPage() {
   const firstWork = workList.getFirstItemReadyNull();
   const containerMainDOM = document.querySelector(".main-content");
@@ -139,6 +146,26 @@ export function loadedEventsMainPage() {
       workMain.isReady();
       workList.saveStorage();
       renderPage();
+    } else if (event.target.classList.contains("js-select-work-input")) {
+      const containerWork = event.target.closest(".container-work-item-list");
+      const buttonEliminated = containerWork.querySelector(".eliminated-work");
+      if (event.target.checked) {
+        containerWork.classList.add("js-selected-container-work-item-list");
+        buttonEliminated.classList.add("js-eliminated-work");
+      } else {
+        containerWork.classList.remove("js-selected-container-work-item-list");
+        buttonEliminated.classList.remove("js-eliminated-work");
+      }
+    } else if (event.target.classList.contains("js-btn-eliminated")) {
+      const container = event.target.closest(".container-work-item-list");
+      const idWork = event.target.dataset.index;
+      // console.log(idWork);
+      workList.eliminatedWork(idWork);
+      // console.log(workList.listWork);
+      renderPage();
+      // console.log(idWork);
+      // console.log(workList.getElementById(idWork));
+      // console.log(workList.listWork[workList.listWork.length - 1].id);
     }
   });
   navBarDOM.addEventListener("click", (event) => {
@@ -147,6 +174,7 @@ export function loadedEventsMainPage() {
       workList.eliminatedList();
       renderWorkMain();
       renderList();
+      const cartMain = document.querySelector(".cointainer-work-main");
       cartMain.innerHTML = "Don't have Works";
       listWorkDOM.style.display = "none";
     }
