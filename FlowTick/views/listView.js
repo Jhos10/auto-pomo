@@ -1,76 +1,246 @@
 import workList from "../models/list.js";
+import Work from "../models/work.js";
+import { normalizeTimeWork } from "../utils/utils.js";
 
+// Variable for clock of main work, indicate the play of clock or stop of clock.
 function renderList() {
-  const htmlAcumulator = `
+  let htmlAcumulator = `
   <div class="container-tasks">
     <h3>Active Tasks</h3>
-    <p class="number-works">3</p>
+    <p class="number-works">${workList.listWork.length}</p>
   </div>`;
-  workList.listWork.forEach((work) => {
-    htmlAcumulator += `
-    <div class="container-work-item-list">
-      <label class="checkbox-wrapper">
-        <input type="checkbox" />
-        <span class="custom-checkbox"></span>
-      </label>
-      <div class="container-work-information">
-        <p class="name-pomo">${work.name}</p>
-        <div class="container-other-information">
-          <p class="id-pomo">#Pomo${work.id}</p>
-          <p class="time-pomo">
-            <img src="../images/alarm.png" alt="" height="12px" />${work.time}m
-          </p>
+  workList.listWorkNulls.forEach((work, index) => {
+    if (index !== 0 && work.ready === null) {
+      htmlAcumulator += `
+        <div class="container-work-item-list">
+          <label class="checkbox-wrapper" for="work-${work.id}">
+            <input type="checkbox" class="js-select-work-input" id="work-${work.id}"/>
+            <span class="custom-checkbox"></span>
+          </label>
+          <div class="container-work-information">
+            <p class="name-pomo">${work.name}</p>
+            <div class="container-other-information">
+              <p class="id-pomo">#Pomo${work.id}</p>
+              <p class="time-pomo">
+                <img src="../images/alarm.png" alt="" height="12px" />${work.time}m
+              </p>
+            </div>
+          </div>
+          <div>
+            <img src="../images/bote-de-basura.png"
+              width="18px"
+              class="eliminated-work js-btn-eliminated"
+              data-index="${work.id}">
+          </div>
         </div>
-      </div>
-    </div>
-    `;
+      `;
+    }
   });
+  const containerListWork = document.querySelector(".container-list-work");
+  containerListWork.innerHTML = htmlAcumulator;
 }
 
 function renderWorkMain() {
-  const mainWork = workList.getElementById(0);
+  const mainWork = workList.getFirstItemReadyNull();
   const mainWorkDOM = document.querySelector(".cointainer-work-main");
   mainWorkDOM.innerHTML = `
     <p class="text-light current-session">CURRENT SESSION: ${mainWork.name}</p>
     <p class="time-p">${mainWork.time}</p>
     <div class="container-button-control">
-      <button class="button-work-main">
-        <img src="../images/return.png" alt="" height="16px" />
+      <button class="btn-return-start button-work-main">
+        <img class="btn-return-start" src="../images/return.png" alt="" height="16px" />
       </button>
-      <button class="button-main">START</button>
-      <button class="button-work-main">
-        <img src="../images/next-pomo.png" alt="" height="16px" />
+      <button class="button-main js-start-clock-btn">START</button>
+      <button class="btn-next-song button-work-main">
+        <img class="btn-next-song" src="../images/next-pomo.png" alt="" height="16px" />
       </button>
     </div>
     <p class="text-light motivation-sentence">
       *The only way to do great work is to love what you do*
-    </p>
-  `;
+      </p>
+      `;
 }
 
-function handlerAddWorkDialog() {
-  const buttonAddWork = document.querySelector(".btn-show-add");
+function selectedNewWorkTime(btnElement = null, classAdd, classReferences) {
+  const btnsOptionsTime = document.querySelectorAll(classReferences);
+  for (let i = 0; i < btnsOptionsTime.length; ++i) {
+    btnsOptionsTime[i].classList.remove(classAdd);
+  }
+  btnElement !== null ? btnElement.classList.add(classAdd) : null;
+}
+
+function getInformationNewWork() {
+  const nameNewWork = document.querySelector(".js-name-work-input").value;
+  const timeNewWork = document.querySelector(".btn-selected-time").innerHTML;
+  return {
+    nameNewWork: nameNewWork,
+    lenList:
+      workList.listWork.length === undefined ? 1 : workList.listWork.length,
+    timeNewWork: normalizeTimeWork(timeNewWork),
+  };
+}
+
+export function handlerAddWorkDialog() {
+  const buttonShowDialog = document.querySelector(".btn-show-add");
   const dialogAddWork = document.querySelector(".add-work-dialog");
   const buttonCancelDialog = document.querySelector(".cancel-add-work");
-  if (!buttonAddWork || !dialogAddWork || !buttonCancelDialog) return;
-  buttonAddWork.addEventListener("click", () => dialogAddWork.showModal());
+  const buttonAddWork = document.querySelector(".js-btn-add-work");
+  if (
+    !buttonShowDialog ||
+    !dialogAddWork ||
+    !buttonCancelDialog ||
+    !buttonAddWork
+  )
+    return;
+  buttonShowDialog.addEventListener("click", () => dialogAddWork.showModal());
   buttonCancelDialog.addEventListener("click", () => dialogAddWork.close());
+  buttonAddWork.addEventListener("click", () => {
+    const { nameNewWork, lenList, timeNewWork } = getInformationNewWork();
+    const newWork = new Work(nameNewWork, lenList, timeNewWork);
+    workList.addWork(newWork);
+    renderPage();
+  });
   dialogAddWork.addEventListener("click", (event) => {
     if (event.target === dialogAddWork) {
       dialogAddWork.close();
+    } else if (event.target.classList.contains("option-button-time")) {
+      selectedNewWorkTime(
+        event.target,
+        "btn-selected-time",
+        ".option-button-time",
+      );
     }
   });
 }
 
+let idSetInterval = null;
+let startTimer = false;
+
+export function loadedEventsMainPage() {
+  const firstWork = workList.getFirstItemReadyNull();
+  const containerMainDOM = document.querySelector(".main-content");
+  const navBarDOM = document.querySelector(".option-nav");
+  containerMainDOM.addEventListener("click", (event) => {
+    if (
+      (event.target.classList.contains("button-main") ||
+        event.target.classList.contains("icon-stop")) &&
+      startTimer === false
+    ) {
+      idSetInterval = startClock();
+      startTimer = true;
+      event.target.innerHTML =
+        "<img class='icon-stop' src='../images/boton-de-pausa.png' height='10px'/>";
+    } else if (
+      (event.target.classList.contains("button-main") ||
+        event.target.classList.contains("icon-stop")) &&
+      startTimer === true
+    ) {
+      event.target.closest(".button-main").innerHTML = "START";
+      startTimer = false;
+      pauseClock(idSetInterval);
+    } else if (event.target.classList.contains("btn-return-start")) {
+      firstWork.returnTimerOriginalValue();
+      returnValueClock(firstWork);
+    } else if (event.target.classList.contains("btn-next-song")) {
+      const workMain = workList.getFirstItemReadyNull();
+      workMain.isReady();
+      workList.saveStorage();
+      renderPage();
+    } else if (event.target.classList.contains("js-select-work-input")) {
+      const containerWork = event.target.closest(".container-work-item-list");
+      const buttonEliminated = containerWork.querySelector(".eliminated-work");
+      if (event.target.checked) {
+        containerWork.classList.add("js-selected-container-work-item-list");
+        buttonEliminated.classList.add("js-eliminated-work");
+      } else {
+        containerWork.classList.remove("js-selected-container-work-item-list");
+        buttonEliminated.classList.remove("js-eliminated-work");
+      }
+    } else if (event.target.classList.contains("js-btn-eliminated")) {
+      const container = event.target.closest(".container-work-item-list");
+      const idWork = event.target.dataset.index;
+      // console.log(idWork);
+      workList.eliminatedWork(idWork);
+      // console.log(workList.listWork);
+      renderPage();
+      // console.log(idWork);
+      // console.log(workList.getElementById(idWork));
+      // console.log(workList.listWork[workList.listWork.length - 1].id);
+    }
+  });
+  navBarDOM.addEventListener("click", (event) => {
+    if (event.target.classList.contains("js-btn-eliminated-list")) {
+      console.log("Click in eliminated list");
+      workList.eliminatedList();
+      renderWorkMain();
+      renderList();
+      const cartMain = document.querySelector(".cointainer-work-main");
+      cartMain.innerHTML = "Don't have Works";
+      listWorkDOM.style.display = "none";
+    }
+  });
+}
+
+function returnValueClock(currentlyWork) {
+  document.querySelector(".time-p").innerHTML = currentlyWork.timer;
+}
+
+function pauseClock(idSetInterval) {
+  clearInterval(idSetInterval);
+}
+let chronometer = null;
+let startNewHomework = true;
+function startClock() {
+  const startHomeWork = workList.getFirstItemReadyNull();
+  const copyTime = startHomeWork.timer.split(":");
+  let [minutes, seconds] = copyTime;
+  const clock = document.querySelector(".time-p");
+  let changeSeconds = startNewHomework === true ? false : true;
+  chronometer = setInterval(() => {
+    if (seconds === "00" && changeSeconds === false) {
+      seconds = 60 - 1;
+      changeSeconds = true;
+      startNewHomework = false;
+    } else {
+      seconds = Number(seconds);
+      seconds -= 1;
+      seconds =
+        seconds < 10 ? String(seconds).padStart(2, "0") : String(seconds);
+    }
+
+    if (seconds === "00" && minutes == "00") {
+      clearInterval(idSetInterval);
+      startHomeWork.isReady();
+      workList.saveStorage();
+      startNewHomework = true;
+      startTimer = true;
+      renderPage();
+      idSetInterval = startClock();
+      document.querySelector(".js-start-clock-btn").innerHTML =
+        "<img class='icon-stop' src='../images/boton-de-pausa.png' height='10px'/>";
+    } else if (seconds === "00" && changeSeconds === true) {
+      minutes = Number(minutes);
+      minutes -= 1;
+      minutes =
+        minutes < 10 ? String(minutes).padStart(2, "0") : String(minutes);
+      changeSeconds = false;
+    }
+    clock.innerHTML = minutes + ":" + seconds;
+    startHomeWork.timer = minutes + ":" + seconds;
+  }, 1000);
+  return chronometer;
+}
+
 export function renderPage() {
-  if (workList.listWork === null) {
-    const cartMain = document.querySelector(".cointainer-work-main");
-    const listWorkDOM = document.querySelector(".container-list-work");
+  const cartMain = document.querySelector(".cointainer-work-main");
+  const listWorkDOM = document.querySelector(".container-list-work");
+  if (workList.listWork.length === 0 || !workList.getFirstItemReadyNull()) {
     cartMain.innerHTML = "Don't have Works";
-    listWorkDOM.remove();
+    listWorkDOM.style.display = "none";
   } else {
-    renderList();
+    workList.loadedStorage();
+    listWorkDOM.style.display = "flex";
     renderWorkMain();
+    renderList();
   }
-  handlerAddWorkDialog();
 }
