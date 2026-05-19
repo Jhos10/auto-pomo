@@ -218,6 +218,10 @@ function startClock() {
       idSetInterval = startClock();
       document.querySelector(".js-start-clock-btn").innerHTML =
         "<img class='icon-stop' src='../images/boton-de-pausa.png' height='10px'/>";
+      console.log("Lista de los trabajos:");
+      console.log(workList.listWork);
+      console.log("Lista de los trabajos que aun no han empezado:");
+      console.log(workList.listWorkNulls);
     } else if (seconds === "00" && changeSeconds === true) {
       minutes = Number(minutes);
       minutes -= 1;

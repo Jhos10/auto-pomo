@@ -126,6 +126,7 @@ body {
 
 .box-session {
   margin-top: 0;
+  margin-bottom: 10px;
   background-color: white;
   border-radius: 17px;
   padding: 10px 15px;
@@ -188,6 +189,11 @@ body {
   padding: 6px;
   font-weight: 600;
   font-size: 12px;
+  cursor: pointer;
+}
+
+.btn-grafics:active {
+  filter: brightness(0.8); /* Oscurece el botón un 20% al hacer clic */
 }
 
 .container-buttons-grafics {
