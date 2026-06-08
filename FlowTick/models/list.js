@@ -64,6 +64,72 @@ class List {
     this.getWorksNulls();
     localStorage.clear("listWork");
   }
+
+  getListWorksCompleted() {
+    const list_works_completed = workList.listWork.filter((work) =>
+      work.ready === "completed" ? true : false,
+    );
+    return list_works_completed;
+  }
+
+  getListWorksIncompleted() {
+    const list_works_incompleted = workList.listWork.filter((work) =>
+      work.ready === "incompleted" ? true : false,
+    );
+    return list_works_incompleted;
+  }
+
+  getListWorksDroppeds() {
+    const list_works_dropped = workList.listWork.filter((work) => {
+      work.ready === "deleted" ? true : false;
+    });
+
+    return list_works_dropped;
+  }
+
+  calculateWorksComplete() {
+    let countWorksReady = 0;
+    for (let i = 0; i < this.listWork.length; i++) {
+      if (this.listWork[i].ready === "completed") {
+        countWorksReady += 1;
+      }
+    }
+    return countWorksReady;
+  }
+
+  calculateWorksIncompleted() {
+    let countWorksIncompleted = 0;
+    for (let i = 0; i < this.listWork.length; i++) {
+      if (this.listWork[i].ready === "incompleted") {
+        countWorksIncompleted += 1;
+      }
+    }
+    return countWorksIncompleted;
+  }
+  calculateWorksDeleted() {
+    let countWorksDeleted = 0;
+    for (let i = 0; i < this.listWork.length; i++) {
+      if (this.listWork[i].ready === "deleted") {
+        countWorksDeleted += 1;
+      }
+    }
+    return countWorksDeleted;
+  }
+
+  calculateTimeInvested() {
+    let countTimer = 0;
+    for (let i = 0; i < this.listWork.length; i++) {
+      if (this.listWork[i].ready === "completed") {
+        const [minutes, seconds] = this.listWork[i].time.split(":").map(Number);
+        const hours = minutes / 60 + seconds / 3600;
+        countTimer += hours;
+      }
+    }
+    // Redondear al final
+    countTimer = Number(countTimer.toFixed(2));
+    console.log(countTimer);
+    return countTimer;
+  }
 }
 
 const workList = new List();

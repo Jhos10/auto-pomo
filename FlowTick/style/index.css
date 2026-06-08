@@ -27,6 +27,8 @@ nav {
 
 .title-web {
   font-size: 23px;
+  color: black;
+  text-decoration: none;
 }
 
 .container-icons > * {
@@ -68,6 +70,10 @@ nav {
   color: white;
 }
 
+.a-page-performance {
+  color: rgb(127, 221, 162);
+  text-decoration: none;
+}
 main {
   display: flex;
   justify-content: center;

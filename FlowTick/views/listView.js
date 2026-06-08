@@ -116,6 +116,7 @@ export function handlerAddWorkDialog() {
 let idSetInterval = null;
 let startTimer = false;
 
+
 export function loadedEventsMainPage() {
   const firstWork = workList.getFirstItemReadyNull();
   const containerMainDOM = document.querySelector(".main-content");
@@ -159,14 +160,9 @@ export function loadedEventsMainPage() {
     } else if (event.target.classList.contains("js-btn-eliminated")) {
       const container = event.target.closest(".container-work-item-list");
       const idWork = event.target.dataset.index;
-      // console.log(idWork);
       workList.eliminatedWork(idWork);
-      // console.log(workList.listWork);
       renderPage();
-      // console.log(idWork);
-      // console.log(workList.getElementById(idWork));
-      // console.log(workList.listWork[workList.listWork.length - 1].id);
-    }
+    } 
   });
   navBarDOM.addEventListener("click", (event) => {
     if (event.target.classList.contains("js-btn-eliminated-list")) {
@@ -218,6 +214,10 @@ function startClock() {
       idSetInterval = startClock();
       document.querySelector(".js-start-clock-btn").innerHTML =
         "<img class='icon-stop' src='../images/boton-de-pausa.png' height='10px'/>";
+      console.log("Lista de los trabajos:");
+      console.log(workList.listWork);
+      console.log("Lista de los trabajos que aun no han empezado:");
+      console.log(workList.listWorkNulls);
     } else if (seconds === "00" && changeSeconds === true) {
       minutes = Number(minutes);
       minutes -= 1;

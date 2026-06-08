@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FlowTick</title>
+    <link rel="stylesheet" href="../style/index.css" />
+    <link rel="icon" type="images" href="../images/FlowTickIcon.png" />
+    <link rel="stylesheet" href="../style/performance.css" />
+    <!-- <iframe src="../images/FlowTickIcon.png"></iframe> -->
+  </head>
+  <body>
+    <nav class="option-nav">
+      <div class="container-icons">
+        <img src="../images/FlowTickIcon.png" alt="" height="40px" />
+        <h1 class="title-web">
+          <a href="./index.html" class="title-web">FlowTick</a>
+        </h1>
+      </div>
+      <div class="container-buttons">
+        <button
+          class="btn-show-eliminated-list button-option-nav js-btn-eliminated-list"
+        >
+          <img
+            src="../images/icon-delete-list.png"
+            alt=""
+            height="16px"
+            class="icon-button-nav"
+          />Eliminated list
+        </button>
+        <button class="btn-show-performance button-option-nav">
+          <img
+            src="../images/performance-icon.png"
+            alt=""
+            height="16px"
+            class="icon-button-nav"
+          />Performance
+        </button>
+        <button class="btn-show-add button-option-nav">
+          <img
+            src="../images/add-icon.png"
+            alt=""
+            height="16px"
+            class="icon-button-nav"
+          />Add work
+        </button>
+      </div>
+    </nav>
+    <dialog class="add-work-dialog">
+      <div class="content-dilog">
+        <p class="new-task-p">NEW TASK</p>
+        <input
+          type="text"
+          placeholder="What's the focus"
+          class="name-work-input js-name-work-input"
+        />
+        <p class="session-p">SESSION LENGTH</p>
+        <div class="options">
+          <button class="option-button-time selected-option-time">1m</button>
+          <button class="option-button-time selected-option-time">60m</button>
+          <button class="option-button-time selected-option-time">90m</button>
+        </div>
+        <div class="div-control-dialog">
+          <button class="cancel-add-work btn-control-dialog">Cancel</button>
+          <button class="add-work btn-control-dialog js-btn-add-work">
+            Add to my day
+          </button>
+        </div>
+      </div>
+    </dialog>
+    <main class="main-container">
+      <section class="header-section">
+        <div class="titles-header-container">
+          <h2 class="title-header-container">Performance History</h2>
+          <p class="subtitle-header-container">
+            Review your focused productivity sessions
+          </p>
+        </div>
+        <div class="filters-time-container">
+          <option value="Day" class="element-date">Day</option>
+          <option value="Week" class="element-date">Week</option>
+          <option value="Month" class="element-date">Month</option>
+          <input type="date" class="element-date" />
+        </div>
+      </section>
+      <section class="section-datas">
+        <div class="section-data section-focus">
+          <p class="title-focus">TOTAL FOCUS</p>
+          <p class="p-data p-data-focus">24 Sessions</p>
+        </div>
+        <div class="section-data section-completion">
+          <p class="title-focus">COMPLETION</p>
+          <p class="p-data-focus p-complete">82%</p>
+        </div>
+        <div class="section-data section-dropped">
+          <p class="title-focus">DROPPED</p>
+          <p class="p-data-focus p-dropped">4 Sessions</p>
+        </div>
+        <div class="section-data section-invested">
+          <p class="title-focus">TIME INVESTED</p>
+          <p class="p-data-invested p-data-focus">24h</p>
+        </div>
+      </section>
+      <section class="section-general">
+        <section class="section-grafics">
+          <div class="container-content-grafics">
+            <div class="titles-box">
+              <h3 class="title-grafics">Weekly productivity</h3>
+              <p class="subtitle-grafics">Focus hours distributed per day</p>
+            </div>
+            <div class="container-buttons-grafics">
+              <button class="btn-sessions-grafics btn-grafics">Sessions</button>
+              <button class="btn-sessions-grafics btn-grafics">
+                Focus Time
+              </button>
+            </div>
+          </div>
+        </section>
+        <section class="section-sessions">
+          <section class="section-works-dropped">
+            <div class="information-session">
+              <img src="../images/cancelar.png" class="symbol-config" alt="" />
+              <p class="p-information">DROPPED SESSIONS</p>
+              <p class="special-p-dropped p-information">4 Sessions</p>
+            </div>
+            <div class="box-session">
+              <div>
+                <p class="name-activity">Preparar el desayuno</p>
+                <p class="time-activity">12:00</p>
+              </div>
+              <img
+                src="../images/tres-puntos.png"
+                class="symbol-config"
+                alt=""
+              />
+            </div>
+          </section>
+          <section class="section-works-completed">
+            <div class="information-session">
+              <img src="../images/cheque.png" class="symbol-config" alt="" />
+              <p class="p-information">COMPLETED</p>
+              <p class="special-p-completed p-information">4 Sessions</p>
+            </div>
+            <div class="box-session">
+              <div>
+                <p class="name-activity">Salir hacer ejercicio</p>
+                <p class="time-activity">10:00</p>
+              </div>
+              <img
+                src="../images/tres-puntos.png"
+                class="symbol-config"
+                alt=""
+              />
+            </div>
+          </section>
+        </section>
+      </section>
+    </main>
+  </body>
+  <script type="module" src="../views/performance.js"></script>
+</html>
