@@ -115,8 +115,6 @@ export function handlerAddWorkDialog() {
 
 let idSetInterval = null;
 let startTimer = false;
-
-
 export function loadedEventsMainPage() {
   const firstWork = workList.getFirstItemReadyNull();
   const containerMainDOM = document.querySelector(".main-content");

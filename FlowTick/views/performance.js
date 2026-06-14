@@ -1,3 +1,4 @@
+// import { Chart } from "chart.js";
 import workList from "../models/list.js";
 const container_stadistics = document.querySelector(".main-container");
 // Calculo de variables globales de la lista
@@ -19,6 +20,35 @@ function configureSectionDatas() {
   console.log(investedTime);
   const time_invested = (document.querySelector(".p-data-invested").innerHTML =
     `${investedTime}h`);
+}
+
+function generate_grafics(type_grafic = "session") {
+  let grafics = document.querySelector("#grafic-performance");
+  console.log(grafics);
+  new Chart(grafics, {
+    type: "bar",
+    data: {
+      labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+      datasets: [
+        {
+          label: "# of Votes",
+          data: [12, 19, 3, 5, 2, 3],
+          borderWidth: 1,
+        },
+        {
+          label: "number of dropped works",
+          data: [4, 5, 2, 4, 1, 0],
+        },
+      ],
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+      },
+    },
+  });
 }
 
 function configureSectionWorksDropped() {
@@ -44,7 +74,6 @@ function configureSectionWorksDropped() {
             </div>`;
   }
   section_works_dropped.innerHTML = acumulatorHtlm;
-  console.log(section_works_dropped);
 }
 
 function configureSectionWorksCompleted() {
@@ -80,6 +109,7 @@ function structurePage() {
   configureSectionDatas();
   configureSectionWorksDropped();
   configureSectionWorksCompleted();
+  generate_grafics();
 }
 
 function performanceConfigure() {
