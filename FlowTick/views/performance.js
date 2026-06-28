@@ -1,6 +1,6 @@
 // import { Chart } from "chart.js";
-import workList from "../models/list.js";
-// import { schedule_user } from "../models/Schedule.js";
+// import workList from "../models/list.js";
+import { schedule_user, workList } from "../models/Schedule.js";
 const container_stadistics = document.querySelector(".main-container");
 // Calculo de variables globales de la lista
 const worksCompleted = workList.calculateWorksComplete();

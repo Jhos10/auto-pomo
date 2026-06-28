@@ -150,7 +150,7 @@ export class List {
   }
 }
 
-export const workList = new List();
-workList.loadedStorage();
+// export const workList = new List();
+// workList.loadedStorage();
 
 // export let workList;

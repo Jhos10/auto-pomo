@@ -1,6 +1,6 @@
 // import { useImperativeHandle } from "react";
 import { getSystemDate } from "../utils/utils.js";
-import { workList, List } from "./list.js";
+import { List } from "./list.js";
 import Work from "./work.js";
 export class Schedule {
   constructor() {
@@ -173,3 +173,4 @@ export class Schedule {
 }
 
 export let schedule_user = new Schedule();
+export const workList = schedule_user.getDateWorks();
