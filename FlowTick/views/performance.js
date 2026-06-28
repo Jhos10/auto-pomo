@@ -1,5 +1,6 @@
 // import { Chart } from "chart.js";
 import workList from "../models/list.js";
+// import { schedule_user } from "../models/Schedule.js";
 const container_stadistics = document.querySelector(".main-container");
 // Calculo de variables globales de la lista
 const worksCompleted = workList.calculateWorksComplete();
@@ -31,13 +32,17 @@ function generate_grafics(type_grafic = "session") {
       labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
       datasets: [
         {
-          label: "# of Votes",
+          label: "number of completed works",
           data: [12, 19, 3, 5, 2, 3],
           borderWidth: 1,
         },
         {
           label: "number of dropped works",
           data: [4, 5, 2, 4, 1, 0],
+        },
+        {
+          label: "number of incompleted works",
+          data: [4, 6, 7, 8, 9, 1],
         },
       ],
     },
@@ -105,7 +110,6 @@ function configureSectionWorksCompleted() {
 }
 
 function structurePage() {
-  // container_stadistics.innerHTML = "";
   configureSectionDatas();
   configureSectionWorksDropped();
   configureSectionWorksCompleted();

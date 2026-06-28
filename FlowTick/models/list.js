@@ -1,29 +1,34 @@
 import Work from "./work.js";
 
-class List {
-  constructor() {
-    this.listWork = [];
+export class List {
+  constructor(listWork = []) {
+    this.listWork = listWork;
     this.listWorkNulls = null;
     this.getWorksNulls();
   }
 
-  addWork(work) {
+  // Add new work
+
+  addWork(time, name_work) {
+    let work = new Work(name_work, this.listWork.length, time);
     this.listWork.push(work);
     this.saveStorage();
+    return work.create_date.toLocaleDateString("es-ES");
   }
 
+  // ELiminate work
+
   eliminatedWork(idWork) {
-    console.log(idWork);
     this.listWork.forEach((value) => {
       if (value.id === Number(idWork)) {
-        console.log("Hey ingreso en el if");
         value.ready = "Eliminated";
       }
     });
-    console.log(this.listWork);
     localStorage.setItem("listWork", JSON.stringify(this.listWork));
     return true;
   }
+
+  // Getters
 
   getElementById(idWork) {
     for (let i = 0; i < this.listWork.length; i++) {
@@ -49,6 +54,8 @@ class List {
     return this.listWorkNulls;
   }
 
+  // Manage of local storage
+
   loadedStorage() {
     this.listWork = JSON.parse(localStorage.getItem("listWork")) || [];
     this.listWork = this.listWork.map(Work.fromJSON);
@@ -59,11 +66,22 @@ class List {
     localStorage.setItem("listWork", JSON.stringify(this.listWork));
   }
 
+  static fromJSON(string_list_Work) {
+    let list_works = string_list_Work.listWork;
+    let list_work_original = new List(list_works);
+    list_work_original.listWork = list_work_original.listWork.map(
+      Work.fromJSON,
+    );
+    return list_work_original;
+  }
+
   eliminatedList() {
     this.listWork = [];
     this.getWorksNulls();
     localStorage.clear("listWork");
   }
+
+  // Getters
 
   getListWorksCompleted() {
     const list_works_completed = workList.listWork.filter((work) =>
@@ -132,7 +150,7 @@ class List {
   }
 }
 
-const workList = new List();
+export const workList = new List();
 workList.loadedStorage();
 
-export default workList;
+// export let workList;

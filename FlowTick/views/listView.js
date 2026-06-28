@@ -1,9 +1,10 @@
-import workList from "../models/list.js";
-import Work from "../models/work.js";
+import { schedule_user, Schedule } from "../models/Schedule.js";
 import { normalizeTimeWork } from "../utils/utils.js";
-
+// console.log("Execute first get");
+// console.log(workList);
 // Variable for clock of main work, indicate the play of clock or stop of clock.
 function renderList() {
+  let workList = schedule_user.getDateWorks();
   let htmlAcumulator = `
   <div class="container-tasks">
     <h3>Active Tasks</h3>
@@ -38,27 +39,38 @@ function renderList() {
   });
   const containerListWork = document.querySelector(".container-list-work");
   containerListWork.innerHTML = htmlAcumulator;
+  // if (workList === undefined) {
+  // } else {
+  //   renderPage();
+  // }
 }
 
 function renderWorkMain() {
-  const mainWork = workList.getFirstItemReadyNull();
+  console.log(schedule_user instanceof Schedule);
+  let mainWork = schedule_user.getDateWorks();
+  // if (mainWork === undefined) {
+  //   renderPage();
+  // } else {
+  // }
+  mainWork = mainWork.getFirstItemReadyNull();
+  console.log(mainWork);
   const mainWorkDOM = document.querySelector(".cointainer-work-main");
   mainWorkDOM.innerHTML = `
-    <p class="text-light current-session">CURRENT SESSION: ${mainWork.name}</p>
-    <p class="time-p">${mainWork.time}</p>
-    <div class="container-button-control">
-      <button class="btn-return-start button-work-main">
-        <img class="btn-return-start" src="../images/return.png" alt="" height="16px" />
-      </button>
-      <button class="button-main js-start-clock-btn">START</button>
-      <button class="btn-next-song button-work-main">
-        <img class="btn-next-song" src="../images/next-pomo.png" alt="" height="16px" />
-      </button>
-    </div>
-    <p class="text-light motivation-sentence">
-      *The only way to do great work is to love what you do*
-      </p>
-      `;
+      <p class="text-light current-session">CURRENT SESSION: ${mainWork.name}</p>
+      <p class="time-p">${mainWork.time}</p>
+      <div class="container-button-control">
+        <button class="btn-return-start button-work-main">
+          <img class="btn-return-start" src="../images/return.png" alt="" height="16px" />
+        </button>
+        <button class="button-main js-start-clock-btn">START</button>
+        <button class="btn-next-song button-work-main">
+          <img class="btn-next-song" src="../images/next-pomo.png" alt="" height="16px" />
+        </button>
+      </div>
+      <p class="text-light motivation-sentence">
+        *The only way to do great work is to love what you do*
+        </p>
+        `;
 }
 
 function selectedNewWorkTime(btnElement = null, classAdd, classReferences) {
@@ -74,8 +86,6 @@ function getInformationNewWork() {
   const timeNewWork = document.querySelector(".btn-selected-time").innerHTML;
   return {
     nameNewWork: nameNewWork,
-    lenList:
-      workList.listWork.length === undefined ? 1 : workList.listWork.length,
     timeNewWork: normalizeTimeWork(timeNewWork),
   };
 }
@@ -95,9 +105,8 @@ export function handlerAddWorkDialog() {
   buttonShowDialog.addEventListener("click", () => dialogAddWork.showModal());
   buttonCancelDialog.addEventListener("click", () => dialogAddWork.close());
   buttonAddWork.addEventListener("click", () => {
-    const { nameNewWork, lenList, timeNewWork } = getInformationNewWork();
-    const newWork = new Work(nameNewWork, lenList, timeNewWork);
-    workList.addWork(newWork);
+    const { nameNewWork, timeNewWork } = getInformationNewWork();
+    schedule_user.addWorks(timeNewWork, nameNewWork);
     renderPage();
   });
   dialogAddWork.addEventListener("click", (event) => {
@@ -116,6 +125,12 @@ export function handlerAddWorkDialog() {
 let idSetInterval = null;
 let startTimer = false;
 export function loadedEventsMainPage() {
+  let workList = schedule_user.getDateWorks();
+  console.log(workList);
+  if (workList === undefined || workList.length === 0) {
+    return false;
+  }
+  console.log("Charge the events of main page");
   const firstWork = workList.getFirstItemReadyNull();
   const containerMainDOM = document.querySelector(".main-content");
   const navBarDOM = document.querySelector(".option-nav");
@@ -158,19 +173,22 @@ export function loadedEventsMainPage() {
     } else if (event.target.classList.contains("js-btn-eliminated")) {
       const container = event.target.closest(".container-work-item-list");
       const idWork = event.target.dataset.index;
-      workList.eliminatedWork(idWork);
-      renderPage();
-    } 
+      console.log("HOla");
+      schedule_user.eliminatedList(workList);
+      // workList.eliminatedWork(idWork);
+      // renderPage();
+    }
   });
   navBarDOM.addEventListener("click", (event) => {
     if (event.target.classList.contains("js-btn-eliminated-list")) {
       console.log("Click in eliminated list");
-      workList.eliminatedList();
-      renderWorkMain();
-      renderList();
+      schedule_user.eliminatedList(workList);
+      // renderWorkMain();
+      // renderList();
+      renderPage();
       const cartMain = document.querySelector(".cointainer-work-main");
-      cartMain.innerHTML = "Don't have Works";
-      listWorkDOM.style.display = "none";
+      // cartMain.innerHTML = "Don't have Works";
+      // listWorkDOM.style.display = "none";
     }
   });
 }
@@ -185,6 +203,7 @@ function pauseClock(idSetInterval) {
 let chronometer = null;
 let startNewHomework = true;
 function startClock() {
+  const workList = schedule_user.getDateWorks();
   const startHomeWork = workList.getFirstItemReadyNull();
   const copyTime = startHomeWork.timer.split(":");
   let [minutes, seconds] = copyTime;
@@ -206,16 +225,17 @@ function startClock() {
       clearInterval(idSetInterval);
       startHomeWork.isReady();
       workList.saveStorage();
+      schedule_user.saveWorkList();
       startNewHomework = true;
       startTimer = true;
       renderPage();
       idSetInterval = startClock();
       document.querySelector(".js-start-clock-btn").innerHTML =
         "<img class='icon-stop' src='../images/boton-de-pausa.png' height='10px'/>";
-      console.log("Lista de los trabajos:");
-      console.log(workList.listWork);
-      console.log("Lista de los trabajos que aun no han empezado:");
-      console.log(workList.listWorkNulls);
+      // console.log("Lista de los trabajos:");
+      // console.log(workList.listWork);
+      // console.log("Lista de los trabajos que aun no han empezado:");
+      // console.log(workList.listWorkNulls);
     } else if (seconds === "00" && changeSeconds === true) {
       minutes = Number(minutes);
       minutes -= 1;
@@ -230,14 +250,30 @@ function startClock() {
 }
 
 export function renderPage() {
+  // Recuperar la informacion que esta almacenada en el local storage
+  schedule_user.loadadSchedule();
+  const workList = schedule_user.getDateWorks();
+  const first_work_null = workList.getFirstItemReadyNull();
+  const number_keys = Object.keys(schedule_user.works_lists).length;
+  const verify_number_works = workList === undefined ? 0 : workList.length;
+  console.log(number_keys);
   const cartMain = document.querySelector(".cointainer-work-main");
   const listWorkDOM = document.querySelector(".container-list-work");
-  if (workList.listWork.length === 0 || !workList.getFirstItemReadyNull()) {
+  if (
+    verify_number_works === 0 ||
+    number_keys === 0 ||
+    first_work_null === false
+  ) {
+    let workList = schedule_user.getDateWorks();
     cartMain.innerHTML = "Don't have Works";
     listWorkDOM.style.display = "none";
   } else {
-    workList.loadedStorage();
+    // workList.loadedStorage();
+    // console.log(workList.listWork);
+    let workList = schedule_user.getDateWorks();
+    console.log(workList);
     listWorkDOM.style.display = "flex";
+    // console.log("Else");
     renderWorkMain();
     renderList();
   }
