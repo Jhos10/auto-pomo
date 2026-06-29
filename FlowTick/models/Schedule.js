@@ -76,7 +76,7 @@ export class Schedule {
       Object.keys(this.works_lists).length > 0
         ? this.getDayList(date_array[0], this.works_lists[date])
         : [];
-
+    console.log(this.works_lists);
     return list_work;
   }
 
@@ -173,4 +173,4 @@ export class Schedule {
 }
 
 export let schedule_user = new Schedule();
-export const workList = schedule_user.getDateWorks();
+schedule_user.loadadSchedule();

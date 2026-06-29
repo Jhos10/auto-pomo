@@ -84,21 +84,21 @@ export class List {
   // Getters
 
   getListWorksCompleted() {
-    const list_works_completed = workList.listWork.filter((work) =>
+    const list_works_completed = this.listWork.filter((work) =>
       work.ready === "completed" ? true : false,
     );
     return list_works_completed;
   }
 
   getListWorksIncompleted() {
-    const list_works_incompleted = workList.listWork.filter((work) =>
+    const list_works_incompleted = this.listWork.filter((work) =>
       work.ready === "incompleted" ? true : false,
     );
     return list_works_incompleted;
   }
 
   getListWorksDroppeds() {
-    const list_works_dropped = workList.listWork.filter((work) => {
+    const list_works_dropped = this.listWork.filter((work) => {
       work.ready === "deleted" ? true : false;
     });
 
