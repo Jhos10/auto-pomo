@@ -2,6 +2,8 @@
 // import workList from "../models/list.js";
 import { schedule_user } from "../models/Schedule.js";
 const workList = schedule_user.getDateWorks();
+schedule_user.loadadSchedule();
+// console.log(workList);
 const container_stadistics = document.querySelector(".main-container");
 // Calculo de variables globales de la lista
 const worksCompleted = workList.calculateWorksComplete();

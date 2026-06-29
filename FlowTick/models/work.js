@@ -37,7 +37,14 @@ class Work {
   }
 
   static fromJSON(work) {
-    const convertedWork = new Work(work.name, work.id, work.time, work.ready);
+    const convertedWork = new Work(
+      work.name,
+      work.id,
+      work.time,
+      work.ready,
+      new Date(work.create_date),
+    );
+    console.log(convertedWork.create_date instanceof Date);
     return convertedWork;
   }
 

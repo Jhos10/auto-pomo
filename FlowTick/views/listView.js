@@ -126,11 +126,11 @@ let idSetInterval = null;
 let startTimer = false;
 export function loadedEventsMainPage() {
   let workList = schedule_user.getDateWorks();
-  console.log(workList);
+  // console.log(workList);
   if (workList === undefined || workList.length === 0) {
     return false;
   }
-  console.log("Charge the events of main page");
+  // console.log("Charge the events of main page");
   const firstWork = workList.getFirstItemReadyNull();
   const containerMainDOM = document.querySelector(".main-content");
   const navBarDOM = document.querySelector(".option-nav");
@@ -205,6 +205,7 @@ let startNewHomework = true;
 function startClock() {
   const workList = schedule_user.getDateWorks();
   const startHomeWork = workList.getFirstItemReadyNull();
+  if (!startHomeWork) return;
   const copyTime = startHomeWork.timer.split(":");
   let [minutes, seconds] = copyTime;
   const clock = document.querySelector(".time-p");
@@ -230,8 +231,11 @@ function startClock() {
       startTimer = true;
       renderPage();
       idSetInterval = startClock();
-      document.querySelector(".js-start-clock-btn").innerHTML =
-        "<img class='icon-stop' src='../images/boton-de-pausa.png' height='10px'/>";
+      console.log("valor del id del interval", idSetInterval);
+      if (idSetInterval !== undefined) {
+        document.querySelector(".js-start-clock-btn").innerHTML =
+          "<img class='icon-stop' src='../images/boton-de-pausa.png' height='10px'/>";
+      }
       // console.log("Lista de los trabajos:");
       // console.log(workList.listWork);
       // console.log("Lista de los trabajos que aun no han empezado:");
@@ -253,28 +257,31 @@ export function renderPage() {
   // Recuperar la informacion que esta almacenada en el local storage
   schedule_user.loadadSchedule();
   const workList = schedule_user.getDateWorks();
-  const first_work_null = workList.getFirstItemReadyNull();
-  const number_keys = Object.keys(schedule_user.works_lists).length;
+  console.log(schedule_user);
+  console.log(workList);
   const verify_number_works = workList === undefined ? 0 : workList.length;
-  console.log(number_keys);
+  // console.log(verify_number_works);
+  const first_work_null =
+    verify_number_works === 0 ? false : workList.getFirstItemReadyNull();
+  const number_keys = Object.keys(schedule_user.works_lists).length;
   const cartMain = document.querySelector(".cointainer-work-main");
   const listWorkDOM = document.querySelector(".container-list-work");
-  if (
-    verify_number_works === 0 ||
-    number_keys === 0 ||
-    first_work_null === false
-  ) {
-    let workList = schedule_user.getDateWorks();
+  console.log(verify_number_works);
+  console.log(number_keys);
+  console.log(first_work_null);
+  if (number_keys === 0 || first_work_null === false) {
     cartMain.innerHTML = "Don't have Works";
     listWorkDOM.style.display = "none";
+    return false;
   } else {
     // workList.loadedStorage();
     // console.log(workList.listWork);
     let workList = schedule_user.getDateWorks();
-    console.log(workList);
+    // console.log(workList);
     listWorkDOM.style.display = "flex";
     // console.log("Else");
     renderWorkMain();
     renderList();
+    return true;
   }
 }

@@ -17,7 +17,11 @@ export class Schedule {
     // Guardar fecha en el atributo works_lists.
     // Si la clave esta indefinida agregar una lista con el objeto list dentro que se paso en el parametro de la funcion
     // Si no se accede a la lita que se tiene asignada en la respectiva clave del json
-    if (Object.keys(this.works_lists).length === 0) {
+
+    if (
+      Object.keys(this.works_lists).length === 0 ||
+      this.works_lists[date_created] === undefined
+    ) {
       const list_works = new List();
       list_works.addWork(time, name_work);
       this.works_lists[date_created] = [list_works];
@@ -26,7 +30,14 @@ export class Schedule {
         date_created_normalize[0],
         this.works_lists[date_created],
       );
-      list_works.addWork(time, name_work);
+      console.log(list_works);
+      if (list_works === undefined) {
+        const list_work = new List();
+        list_work.addWork(time, name_work);
+        this.works_lists[date_created].push(list_work);
+      } else {
+        list_works.addWork(time, name_work);
+      }
     }
     this.saveWorkList();
     return true;
@@ -62,13 +73,18 @@ export class Schedule {
   }
 
   getDateWorks(date = getSystemDate()) {
-    // this.loadadSchedule();
-    const date_array = date.toLocaleDateString("es-ES").split("/");
+    const date_array =
+      date instanceof Date
+        ? date.toLocaleDateString("es-ES").split("/")
+        : date.split("/");
     date = `${date_array[1]}-${date_array[2]}`;
+    // console.log(this.works_lists[date]);
     const list_work =
       Object.keys(this.works_lists).length > 0
         ? this.getDayList(date_array[0], this.works_lists[date])
         : [];
+
+    // console.log(list_work);
     return list_work;
   }
 
