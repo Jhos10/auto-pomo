@@ -34,7 +34,6 @@ export class Schedule {
 
   // Eliminar una lista de trabajos
   eliminatedList(workRerenfece) {
-    console.log(workRerenfece instanceof List);
     const date_array = workRerenfece.listWork[0].create_date
       .toLocaleDateString("es-ES")
       .split("/");
@@ -42,15 +41,9 @@ export class Schedule {
     const day = date_array[0];
     // Sacar lista
     let list = this.works_lists[date];
-    // console.log(list);
     const { list_works, index } = this.getIndex(list, day);
-    // console.log(list_works, index);
-    // // eliminar de la lista el elemento
-    // console.log(list);
     list_works.eliminatedList();
     const elements_removed = list.splice(index, 1);
-    console.log(elements_removed);
-    console.log(this.works_lists);
     // Necesito verificar cuantos elementos quedaron en el mes.
     // Si quedan mas de un elemento se eliminar
     // this.saveWorkList();
@@ -76,7 +69,6 @@ export class Schedule {
       Object.keys(this.works_lists).length > 0
         ? this.getDayList(date_array[0], this.works_lists[date])
         : [];
-    console.log(this.works_lists);
     return list_work;
   }
 
@@ -86,7 +78,6 @@ export class Schedule {
         .toLocaleDateString("es-ES")
         .split("/");
       if (day === day_work[0]) {
-        console.log(list_work[i], i);
         return { list_works: list_work[i], index: i };
       }
     }
@@ -105,8 +96,6 @@ export class Schedule {
       }
       let first_work = this.getDateWorks();
     }
-
-    // console.log(this.works_lists instanceof {});
   }
 
   getDayList(number_day, list_month) {

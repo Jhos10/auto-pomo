@@ -4,7 +4,6 @@ import { schedule_user } from "../models/Schedule.js";
 const workList = schedule_user.getDateWorks();
 const container_stadistics = document.querySelector(".main-container");
 // Calculo de variables globales de la lista
-console.log(workList);
 const worksCompleted = workList.calculateWorksComplete();
 const worksIncompleted = workList.calculateWorksIncompleted();
 const worksDeleted = workList.calculateWorksDeleted();
@@ -20,14 +19,12 @@ function configureSectionDatas() {
   const dropped = (document.querySelector(".p-dropped").innerHTML =
     `${worksDeleted} Sessions`);
   const investedTime = workList.calculateTimeInvested();
-  console.log(investedTime);
   const time_invested = (document.querySelector(".p-data-invested").innerHTML =
     `${investedTime}h`);
 }
 
-function generate_grafics(type_grafic = "session") {
+function generate_grafics(information, type_grafic = "session") {
   let grafics = document.querySelector("#grafic-performance");
-  console.log(grafics);
   new Chart(grafics, {
     type: "bar",
     data: {
@@ -84,9 +81,6 @@ function configureSectionWorksDropped() {
 }
 
 function configureSectionWorksCompleted() {
-  console.log(workList.getListWorksCompleted());
-  console.log(workList.getListWorksDroppeds());
-  console.log(workList.getListWorksIncompleted());
   const section_works_completed = document.querySelector(
     ".section-works-completed",
   );
@@ -111,11 +105,28 @@ function configureSectionWorksCompleted() {
   section_works_completed.innerHTML = acumulatorHtlm;
 }
 
+function handlers() {
+  const time_container = document.querySelector(".filters-time-container");
+  time_container.addEventListener("click", (event) => {
+    let date_stadistic = document.querySelector(".js-input-date");
+    date_stadistic = date_stadistic === "" ? "" : date_stadistic;
+    if (event.target.value === "Day") {
+      if (date_stadistic) console.log(event.target.value);
+    } else if (event.target.value === "Week") {
+      console.log(event.target.value);
+    } else if (event.target.value === "Month") {
+      console.log(event.target.value);
+    }
+    console.log(event.target);
+  });
+}
+
 function structurePage() {
   configureSectionDatas();
   configureSectionWorksDropped();
   configureSectionWorksCompleted();
   generate_grafics();
+  handlers();
 }
 
 function performanceConfigure() {
