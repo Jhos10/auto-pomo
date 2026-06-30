@@ -123,7 +123,7 @@ export class Schedule {
             .toLocaleDateString("es-ES")
             .split("/")[0],
         );
-
+        // console.log(number_day, day);
         if (day === numberDay) {
           return list_month[i];
         }

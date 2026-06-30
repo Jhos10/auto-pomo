@@ -25,25 +25,62 @@ function configureSectionDatas() {
     `${investedTime}h`);
 }
 
-function generate_grafics(information, type_grafic = "session") {
+function make_dict_information(
+  labels,
+  number_complete_works,
+  number_incompleted_works,
+  number_deleted_workds,
+) {
+  return {
+    labels: labels,
+    number_complete_works: [number_complete_works],
+    number_incompleted_works: [number_incompleted_works],
+    number_deleted_workds: [number_deleted_workds],
+  };
+}
+
+function generate_datas(datas) {
+  const labels = [
+    ...new Map(
+      datas.listWork.map((work) => [
+        work.create_date.toLocaleDateString("es-ES"),
+        work.create_date.toLocaleDateString("es-ES"),
+      ]),
+    ).values(),
+  ];
+  console.log(labels);
+  const number_complete_works = datas.calculateWorksComplete();
+  const number_incompleted_works = datas.calculateWorksIncompleted();
+  const number_deleted_workds = datas.calculateWorksDeleted();
+  return make_dict_information(
+    labels,
+    number_complete_works,
+    number_incompleted_works,
+    number_deleted_workds,
+  );
+}
+
+function generateGrafics(datas, type_grafic = "session") {
+  const dict_information = generate_datas(datas);
+  console.log(dict_information);
   let grafics = document.querySelector("#grafic-performance");
   new Chart(grafics, {
     type: "bar",
     data: {
-      labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+      labels: dict_information.labels,
       datasets: [
         {
           label: "number of completed works",
-          data: [12, 19, 3, 5, 2, 3],
+          data: dict_information.number_complete_works,
           borderWidth: 1,
         },
         {
           label: "number of dropped works",
-          data: [4, 5, 2, 4, 1, 0],
+          data: dict_information.number_deleted_workds,
         },
         {
           label: "number of incompleted works",
-          data: [4, 6, 7, 8, 9, 1],
+          data: dict_information.number_incompleted_works,
         },
       ],
     },
@@ -108,18 +145,43 @@ function configureSectionWorksCompleted() {
 }
 
 function handlers() {
+  function conditionalInputTime(time_container) {
+    // console.log(time_container);
+    if (time_container === "") {
+      return false;
+    } else {
+      return time_container.value;
+    }
+  }
+
+  function settingsTime(date) {
+    const date_array = date.split("-");
+    // console.log(date_array);
+    const date_month_year = `${Number(date_array[1])}-${date_array[0]}`;
+    const date_day = date_array[2];
+    return { day: Number(date_day), month_yer: date_month_year };
+  }
   const time_container = document.querySelector(".filters-time-container");
   time_container.addEventListener("click", (event) => {
     let date_stadistic = document.querySelector(".js-input-date");
     date_stadistic = date_stadistic === "" ? "" : date_stadistic;
     if (event.target.value === "Day") {
-      if (date_stadistic) console.log(event.target.value);
+      const result_conditional_time = conditionalInputTime(date_stadistic);
+      if (result_conditional_time !== false) {
+        const { day, month_yer } = settingsTime(result_conditional_time);
+        const list_month = schedule_user.works_lists[month_yer];
+        // console.log(list_month);
+        const list_work = schedule_user.getDayList(day, list_month);
+        // console.log(list_work);
+        generateGrafics(list_work);
+      } else {
+      }
     } else if (event.target.value === "Week") {
       console.log(event.target.value);
     } else if (event.target.value === "Month") {
       console.log(event.target.value);
     }
-    console.log(event.target);
+    // console.log(event.target);
   });
 }
 
@@ -127,7 +189,7 @@ function structurePage() {
   configureSectionDatas();
   configureSectionWorksDropped();
   configureSectionWorksCompleted();
-  generate_grafics();
+  // generate_grafics();
   handlers();
 }
 

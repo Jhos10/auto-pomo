@@ -44,7 +44,6 @@ class Work {
       work.ready,
       new Date(work.create_date),
     );
-    console.log(convertedWork.create_date instanceof Date);
     return convertedWork;
   }
 
