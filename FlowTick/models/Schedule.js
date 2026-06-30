@@ -134,20 +134,29 @@ export class Schedule {
   }
 
   getWeekList(date, list_works_months) {
+    // console.log(list_works_months);
     let list_days = [];
     let countDays = 0;
     let day = [];
     let check = true;
     let dayreferences = this.getDayList();
-
     while (true) {
       // Recorrer el arreglo de schedule la cual tiene en cada posicion el objeto lista.
-      let list_work = this.works_lists[countDays];
-      let date_complete = list_work.listWork.create_date.day;
-      let day = list_work.listWork.create_date.day;
+      let list_work = list_works_months[countDays];
+      // console.log(list_work, check);
+      if (list_work === undefined && check === false) {
+        return list_work;
+      } else if (list_work === undefined && check === true) {
+        break;
+      }
+      // console.log(countDays, list_work);
+      let date_complete = list_work.listWork[0].create_date.getDay();
+      let day = list_work.listWork[0].create_date.day;
       // Agregar el objeto list en  al list_days.
       list_days.push(list_work);
+      // console.log(list_days);
       // Si la fecha concide con la buscada se cambiara la variable check a falso.
+      console.log(date_complete, date);
       if (date_complete === date) {
         check = false;
       }
@@ -156,9 +165,13 @@ export class Schedule {
       if (day === 6 && check == false) {
         break;
       } else if (day === 6 && check) {
+        check = true;
         list_days = [];
       }
+      countDays += 1;
+      date += 1;
     }
+    console.log(list_days);
     return list_days;
   }
 

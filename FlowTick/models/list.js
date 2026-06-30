@@ -145,7 +145,7 @@ export class List {
     }
     // Redondear al final
     countTimer = Number(countTimer.toFixed(2));
-    console.log(countTimer);
+    // console.log(countTimer);
     return countTimer;
   }
 }

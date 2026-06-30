@@ -165,8 +165,8 @@ function handlers() {
   time_container.addEventListener("click", (event) => {
     let date_stadistic = document.querySelector(".js-input-date");
     date_stadistic = date_stadistic === "" ? "" : date_stadistic;
+    const result_conditional_time = conditionalInputTime(date_stadistic);
     if (event.target.value === "Day") {
-      const result_conditional_time = conditionalInputTime(date_stadistic);
       if (result_conditional_time !== false) {
         const { day, month_yer } = settingsTime(result_conditional_time);
         const list_month = schedule_user.works_lists[month_yer];
@@ -177,7 +177,13 @@ function handlers() {
       } else {
       }
     } else if (event.target.value === "Week") {
-      console.log(event.target.value);
+      if (result_conditional_time != false) {
+        const { day, month_yer } = settingsTime(result_conditional_time);
+        const list_month = schedule_user.works_lists[month_yer];
+        const list_work_month = schedule_user.getWeekList(day, list_month);
+        console.log(list_work_month);
+      } else {
+      }
     } else if (event.target.value === "Month") {
       console.log(event.target.value);
     }
