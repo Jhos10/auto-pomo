@@ -1,5 +1,10 @@
 // import { useImperativeHandle } from "react";
-import { getSystemDate } from "../utils/utils.js";
+import {
+  getSystemDate,
+  normalizeDateToDate,
+  getFirstDayMonth,
+  getLastDayMonth,
+} from "../utils/utils.js";
 import { List } from "./list.js";
 import Work from "./work.js";
 export class Schedule {
@@ -134,44 +139,48 @@ export class Schedule {
   }
 
   getWeekList(date, list_works_months) {
-    // console.log(list_works_months);
+    let [year_date, month_date, day_date] = date.split("-");
+    console.log(year_date, month_date);
+    const first_day_month = getFirstDayMonth(year_date, month_date);
+    const last_day_month = getLastDayMonth(year_date, month_date);
+    console.log(first_day_month, last_day_month);
+    // console.log(date);
+    date = normalizeDateToDate(date).getDay();
     let list_days = [];
     let countDays = 0;
     let day = [];
     let check = true;
     let dayreferences = this.getDayList();
-    while (true) {
-      // Recorrer el arreglo de schedule la cual tiene en cada posicion el objeto lista.
-      let list_work = list_works_months[countDays];
-      // console.log(list_work, check);
-      if (list_work === undefined && check === false) {
-        return list_work;
-      } else if (list_work === undefined && check === true) {
-        break;
-      }
-      // console.log(countDays, list_work);
-      let date_complete = list_work.listWork[0].create_date.getDay();
-      let day = list_work.listWork[0].create_date.day;
-      // Agregar el objeto list en  al list_days.
-      list_days.push(list_work);
-      // console.log(list_days);
-      // Si la fecha concide con la buscada se cambiara la variable check a falso.
-      console.log(date_complete, date);
-      if (date_complete === date) {
-        check = false;
-      }
-      // se verificara que el numero del dia de la tarea que esta guardada en listado sea 6 si la tarea es 6 y esta la variable de chech en falso se rompera el brak.
-      // si la tarea tiene el numero de 6 pero la variable sigue en true se limpiara toda la variable list_days.
-      if (day === 6 && check == false) {
-        break;
-      } else if (day === 6 && check) {
-        check = true;
-        list_days = [];
-      }
-      countDays += 1;
-      date += 1;
-    }
-    console.log(list_days);
+    // Primero mirar si la semana esta partida por dos meses, si esta partida en dos meses.
+    // while (true) {
+    //   // Recorrer el arreglo de schedule la cual tiene en cada posicion el objeto lista.
+    //   console.log("In bucle");
+    //   let list_work = list_works_months[countDays];
+    //   if (list_work === undefined && check === false) {
+    //     return list_days;
+    //   } else if (list_work === undefined && check === true) {
+    //     console.log(list_days);
+    //     break;
+    //   }
+    //   let date_complete = list_work.listWork[0].create_date.getDay();
+    //   let day = list_work.listWork[0].create_date.day;
+    //   // Agregar el objeto list en  al list_days.
+    //   list_days.push(list_work);
+    //   // Si la fecha concide con la buscada se cambiara la variable check a falso.
+    //   if (date_complete === date) {
+    //     check = false;
+    //   }
+    //   // se verificara que el numero del dia de la tarea que esta guardada en listado sea 6 si la tarea es 6 y esta la variable de chech en falso se rompera el brak.
+    //   // si la tarea tiene el numero de 6 pero la variable sigue en true se limpiara toda la variable list_days.
+    //   if (day === 6 && check == false) {
+    //     break;
+    //   } else if (day === 6 && check) {
+    //     check = true;
+    //     list_days = [];
+    //   }
+    //   countDays += 1;
+    //   // date += 1;
+    // }
     return list_days;
   }
 

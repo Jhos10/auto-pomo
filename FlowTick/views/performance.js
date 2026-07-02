@@ -1,9 +1,8 @@
 // import { Chart } from "chart.js";
 // import workList from "../models/list.js";
 import { schedule_user } from "../models/Schedule.js";
-const workList = schedule_user.getDateWorks();
 schedule_user.loadadSchedule();
-// console.log(workList);
+const workList = schedule_user.getDateWorks();
 const container_stadistics = document.querySelector(".main-container");
 // Calculo de variables globales de la lista
 const worksCompleted = workList.calculateWorksComplete();
@@ -170,9 +169,7 @@ function handlers() {
       if (result_conditional_time !== false) {
         const { day, month_yer } = settingsTime(result_conditional_time);
         const list_month = schedule_user.works_lists[month_yer];
-        // console.log(list_month);
         const list_work = schedule_user.getDayList(day, list_month);
-        // console.log(list_work);
         generateGrafics(list_work);
       } else {
       }
@@ -180,7 +177,10 @@ function handlers() {
       if (result_conditional_time != false) {
         const { day, month_yer } = settingsTime(result_conditional_time);
         const list_month = schedule_user.works_lists[month_yer];
-        const list_work_month = schedule_user.getWeekList(day, list_month);
+        const list_work_month = schedule_user.getWeekList(
+          result_conditional_time,
+          list_month,
+        );
         console.log(list_work_month);
       } else {
       }

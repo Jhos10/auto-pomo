@@ -14,3 +14,11 @@ export function normalizeDateToDate(date) {
   let objectDate = new Date(date);
   return objectDate;
 }
+
+export function getLastDayMonth(year, month) {
+  return new Date(year, month, 0);
+}
+
+export function getFirstDayMonth(year, month) {
+  return new Date(year, month - 1, 1);
+}
