@@ -209,16 +209,42 @@ export class Schedule {
 
   getMonthList(date) {
     // Agregar variable que guarde las semanas, la cual seria una lista de listas.
+    // console.log(date);
+    // console.log(this.works_lists[date]);
     let list_weeks = [];
     // Agregar variable contadora de semanas para cuando sean cuatro ya se borre la semana
     let count_weeks = 1;
-
+    let count_days = 1;
+    let list_days_week = [];
     // Hacer un blucle infinito con la finalidad de encontrar cada semana del mes
     while (true) {
       // Descubrir el primer dia agendado en el mes, tomar la referencia y crear la nueva fecha con el primer dia encontrado
+      if (this.works_lists[date][count_days] === undefined) {
+        list_weeks.push(list_days_week);
+        break;
+      }
+      if (
+        this.works_lists[date][count_days].listWork[0].create_date.getDate() ===
+          0 &&
+        count_weeks === 4
+      ) {
+        list_weeks.push(list_days_week);
+        break;
+      } else if (
+        this.works_lists[date][count_days].listWork[0].create_date.getDate() ===
+        0
+      ) {
+        list_weeks.push(list_days_week);
+        count_weeks += 1;
+      }
+
+      list_days_week.push(this.works_lists[date][count_days]);
+      count_days += 1;
       // Agregar la lista retornada por la funcion en la variable list_weeks
       // Acceder al ultimo dia de la lista que retorna la función y guardarla en la variable y sumarle mas uno, este numero sera el referente para crear la nueva fecha.
     }
+    console.log(list_weeks);
+    return list_weeks;
   }
 }
 

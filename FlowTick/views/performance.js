@@ -94,7 +94,7 @@ function generateGraficsDay(datas, type_grafic = "session") {
   return myChart;
 }
 
-function generateGraficsMonth(datas, type_grafic = "session") {
+function generateGraficsWeek(datas, type_grafic = "session") {
   if (myChart) myChart.destroy();
   const array_information_data = datas.map((list_works) => {
     return generate_datas(list_works);
@@ -223,18 +223,22 @@ function handlers() {
       } else {
       }
     } else if (event.target.value === "Week") {
-      if (result_conditional_time != false) {
+      if (result_conditional_time !== false) {
         const { day, month_yer } = settingsTime(result_conditional_time);
         const list_month = schedule_user.works_lists[month_yer];
         const list_work_month = schedule_user.getWeekList(
           result_conditional_time,
           list_month,
         );
-        generateGraficsMonth(list_work_month);
+        generateGraficsWeek(list_work_month);
       } else {
       }
     } else if (event.target.value === "Month") {
-      console.log(event.target.value);
+      if (result_conditional_time !== false) {
+        const { day, month_yer } = settingsTime(result_conditional_time);
+        schedule_user.getMonthList(month_yer);
+      }
+      // console.log(event.target.value);
     }
     // console.log(event.target);
   });
