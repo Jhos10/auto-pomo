@@ -140,47 +140,70 @@ export class Schedule {
 
   getWeekList(date, list_works_months) {
     let [year_date, month_date, day_date] = date.split("-");
-    console.log(year_date, month_date);
+    // console.log(year_date, month_date);
     const first_day_month = getFirstDayMonth(year_date, month_date);
     const last_day_month = getLastDayMonth(year_date, month_date);
-    console.log(first_day_month, last_day_month);
+    // console.log(first_day_month, last_day_month);
     // console.log(date);
-    date = normalizeDateToDate(date).getDay();
+    const date_normalized = normalizeDateToDate(date);
+    const number_day = date_normalized.getDay();
+    // console.log(date_normalized, number_day);
     let list_days = [];
     let countDays = 0;
     let day = [];
     let check = true;
-    let dayreferences = this.getDayList();
+    // let dayreferences = this.getDayList();
+    if (
+      date_normalized.getDate() <= last_day_month.getDate() &&
+      date_normalized.getDate() >= last_day_month.getDate() - 6 &&
+      date_normalized.toLocaleDateString("es-ES", {
+        weekday: "long",
+      }) !== "lunes"
+    ) {
+      let date_second_list_month =
+        this.works_lists[`${Number(month_date) + 1}-${year_date}`];
+      list_works_months = [...list_works_months, ...date_second_list_month];
+    } else if (
+      date_normalized.getDate() <= 7 &&
+      date_normalized.getDate() >= 1 &&
+      date_normalized.toLocaleDateString("es-ES", {
+        weekday: "long",
+      }) !== "lunes"
+    ) {
+      let date_second_list_month =
+        this.works_lists[`${Number(month_date) - 1}-${year_date}`];
+      list_works_months = [...date_second_list_month, ...list_works_months];
+    }
     // Primero mirar si la semana esta partida por dos meses, si esta partida en dos meses.
-    // while (true) {
-    //   // Recorrer el arreglo de schedule la cual tiene en cada posicion el objeto lista.
-    //   console.log("In bucle");
-    //   let list_work = list_works_months[countDays];
-    //   if (list_work === undefined && check === false) {
-    //     return list_days;
-    //   } else if (list_work === undefined && check === true) {
-    //     console.log(list_days);
-    //     break;
-    //   }
-    //   let date_complete = list_work.listWork[0].create_date.getDay();
-    //   let day = list_work.listWork[0].create_date.day;
-    //   // Agregar el objeto list en  al list_days.
-    //   list_days.push(list_work);
-    //   // Si la fecha concide con la buscada se cambiara la variable check a falso.
-    //   if (date_complete === date) {
-    //     check = false;
-    //   }
-    //   // se verificara que el numero del dia de la tarea que esta guardada en listado sea 6 si la tarea es 6 y esta la variable de chech en falso se rompera el brak.
-    //   // si la tarea tiene el numero de 6 pero la variable sigue en true se limpiara toda la variable list_days.
-    //   if (day === 6 && check == false) {
-    //     break;
-    //   } else if (day === 6 && check) {
-    //     check = true;
-    //     list_days = [];
-    //   }
-    //   countDays += 1;
-    //   // date += 1;
-    // }
+    while (true) {
+      // Recorrer el arreglo de schedule la cual tiene en cada posicion el objeto lista.
+
+      let list_work = list_works_months[countDays];
+      if (list_work === undefined && check === false) {
+        return list_days;
+      } else if (list_work === undefined && check === true) {
+        break;
+      }
+      let date_complete = list_work.listWork[0].create_date.getDay();
+      let day = list_work.listWork[0].create_date.day;
+      // Agregar el objeto list en  al list_days.
+      list_days.push(list_work);
+      // Si la fecha concide con la buscada se cambiara la variable check a falso.
+      if (date_complete === date) {
+        check = false;
+      }
+      // se verificara que el numero del dia de la tarea que esta guardada en listado sea 6 si la tarea es 6 y esta la variable de chech en falso se rompera el brak.
+      // si la tarea tiene el numero de 6 pero la variable sigue en true se limpiara toda la variable list_days.
+      if (day === 6 && check == false) {
+        break;
+      } else if (day === 6 && check) {
+        check = true;
+        list_days = [];
+      }
+      countDays += 1;
+      // date += 1;
+    }
+    list_days = list_days;
     return list_days;
   }
 

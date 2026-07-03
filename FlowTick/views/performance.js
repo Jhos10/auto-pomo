@@ -47,7 +47,6 @@ function generate_datas(datas) {
       ]),
     ).values(),
   ];
-  console.log(labels);
   const number_complete_works = datas.calculateWorksComplete();
   const number_incompleted_works = datas.calculateWorksIncompleted();
   const number_deleted_workds = datas.calculateWorksDeleted();
@@ -59,11 +58,12 @@ function generate_datas(datas) {
   );
 }
 
-function generateGrafics(datas, type_grafic = "session") {
+let myChart;
+function generateGraficsDay(datas, type_grafic = "session") {
+  if (myChart) myChart.destroy();
   const dict_information = generate_datas(datas);
-  console.log(dict_information);
   let grafics = document.querySelector("#grafic-performance");
-  new Chart(grafics, {
+  myChart = new Chart(grafics, {
     type: "bar",
     data: {
       labels: dict_information.labels,
@@ -91,6 +91,57 @@ function generateGrafics(datas, type_grafic = "session") {
       },
     },
   });
+  return myChart;
+}
+
+function generateGraficsMonth(datas, type_grafic = "session") {
+  if (myChart) myChart.destroy();
+  const array_information_data = datas.map((list_works) => {
+    return generate_datas(list_works);
+  });
+  const labels = array_information_data.map((information_day) => {
+    return information_day.labels[0];
+  });
+  const days_completed = array_information_data.map((information_day) => {
+    return information_day.number_complete_works[0];
+  });
+  const days_dropped = array_information_data.map((information_day) => {
+    return information_day.number_deleted_workds[0];
+  });
+  const days_incompleted = array_information_data.map((information_day) => {
+    return information_day.number_incompleted_works[0];
+  });
+
+  let grafics = document.querySelector("#grafic-performance");
+  myChart = new Chart(grafics, {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: "number of completed works",
+          data: days_completed,
+          borderWidth: 1,
+        },
+        {
+          label: "number of dropped works",
+          data: days_dropped,
+        },
+        {
+          label: "number of incompleted works",
+          data: days_incompleted,
+        },
+      ],
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+      },
+    },
+  });
+  return myChart;
 }
 
 function configureSectionWorksDropped() {
@@ -145,7 +196,6 @@ function configureSectionWorksCompleted() {
 
 function handlers() {
   function conditionalInputTime(time_container) {
-    // console.log(time_container);
     if (time_container === "") {
       return false;
     } else {
@@ -155,7 +205,6 @@ function handlers() {
 
   function settingsTime(date) {
     const date_array = date.split("-");
-    // console.log(date_array);
     const date_month_year = `${Number(date_array[1])}-${date_array[0]}`;
     const date_day = date_array[2];
     return { day: Number(date_day), month_yer: date_month_year };
@@ -170,7 +219,7 @@ function handlers() {
         const { day, month_yer } = settingsTime(result_conditional_time);
         const list_month = schedule_user.works_lists[month_yer];
         const list_work = schedule_user.getDayList(day, list_month);
-        generateGrafics(list_work);
+        myChart = generateGraficsDay(list_work);
       } else {
       }
     } else if (event.target.value === "Week") {
@@ -181,7 +230,7 @@ function handlers() {
           result_conditional_time,
           list_month,
         );
-        console.log(list_work_month);
+        generateGraficsMonth(list_work_month);
       } else {
       }
     } else if (event.target.value === "Month") {
