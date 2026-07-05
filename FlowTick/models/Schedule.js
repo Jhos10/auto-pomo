@@ -214,32 +214,80 @@ export class Schedule {
     let list_weeks = [];
     // Agregar variable contadora de semanas para cuando sean cuatro ya se borre la semana
     let count_weeks = 1;
-    let count_days = 1;
+    let count_days = 0;
     let list_days_week = [];
+    const array_date = date.split("-");
+    const last_day_month = Number(
+      getLastDayMonth(array_date[1], array_date[0]).getDate(),
+    );
     // Hacer un blucle infinito con la finalidad de encontrar cada semana del mes
+
     while (true) {
       // Descubrir el primer dia agendado en el mes, tomar la referencia y crear la nueva fecha con el primer dia encontrado
-      if (this.works_lists[date][count_days] === undefined) {
-        list_weeks.push(list_days_week);
-        break;
-      }
+      // console.log(count_days, last_day_month);
       if (
-        this.works_lists[date][count_days].listWork[0].create_date.getDate() ===
-          0 &&
-        count_weeks === 4
+        this.works_lists[date][count_days] === undefined &&
+        count_days + 1 === last_day_month
       ) {
+        count_days += 1;
+        list_days_week.push(new List());
+        list_weeks.push(list_days_week);
+        // console.log("the last if", count_days);
+        break;
+      } else if (this.works_lists[date][count_days] === undefined) {
+        list_days_week.push(new List());
+        // console.log(
+        //   "Create new list in the firsts conditionals into the other conditional",
+        //   count_days,
+        // );
+        if (
+          normalizeDateToDate(
+            `${array_date[1]}-${array_date[0]}-${count_days + 1}`,
+          ).getDay() === 0
+        ) {
+          // console.log(
+          //   normalizeDateToDate(
+          //     `${array_date[1]}-${array_date[0]}-${count_days + 1}`,
+          //   ).getDay(),
+          //   normalizeDateToDate(
+          //     `${array_date[1]}-${array_date[0]}-${count_days + 1}`,
+          //   ).getDate(),
+          //   count_days,
+          //   count_weeks,
+          // );
+          // console.log(list_days_week);
+          // console.log(list_days_week);
+          list_weeks.push(list_days_week);
+          list_days_week = [];
+          count_weeks += 1;
+        }
+        count_days += 1;
+        continue;
+      }
+      if (count_weeks === 4) {
+        list_days_week.push(this.works_lists[date][count_days]);
         list_weeks.push(list_days_week);
         break;
       } else if (
-        this.works_lists[date][count_days].listWork[0].create_date.getDate() ===
+        this.works_lists[date][count_days].listWork[0].create_date.getDay() ===
         0
       ) {
+        // console.log(
+        //   this.works_lists[date][count_days].listWork[0].create_date.getDay(),
+        // );
+        // console.log(list_days_week, count_days);
+        list_days_week.push(this.works_lists[date][count_days]);
         list_weeks.push(list_days_week);
         count_weeks += 1;
+        list_days_week = [];
+      } else {
+        list_days_week.push(this.works_lists[date][count_days]);
+        console.log(list_days_week, count_days);
       }
-
-      list_days_week.push(this.works_lists[date][count_days]);
+      // console.log("count days before update", count_days);
       count_days += 1;
+      // console.log("count days after update", count_days);
+      // console.log(this.works_lists[date][count_days]);
       // Agregar la lista retornada por la funcion en la variable list_weeks
       // Acceder al ultimo dia de la lista que retorna la función y guardarla en la variable y sumarle mas uno, este numero sera el referente para crear la nueva fecha.
     }

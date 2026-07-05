@@ -144,6 +144,52 @@ function generateGraficsWeek(datas, type_grafic = "session") {
   return myChart;
 }
 
+function generateGraficsMonth(datas, type_grafic = "session") {
+  if (myChart) myChart.destroy();
+  console.log(datas);
+  const labels = ["week 1", "week 2", "week 3", "week 4"];
+  const information_weeks = [[], [], [], []];
+  console.log(datas);
+  for (let i = 0; i < 4; i++) {
+    if (datas[i] !== undefined) {
+      const information_week = datas[i].map((list_work) => {
+        return generate_datas(list_work);
+      });
+      information_weeks[i] = information_week;
+    }
+  }
+  console.log(information_weeks);
+  // let grafics = document.querySelector("#grafic-performance");
+  // myChart = new Chart(grafics, {
+  //   type: "bar",
+  //   data: {
+  //     labels: labels,
+  //     datasets: [
+  //       {
+  //         label: "number of completed works",
+  //         data: days_completed,
+  //         borderWidth: 1,
+  //       },
+  //       {
+  //         label: "number of dropped works",
+  //         data: days_dropped,
+  //       },
+  //       {
+  //         label: "number of incompleted works",
+  //         data: days_incompleted,
+  //       },
+  //     ],
+  //   },
+  //   options: {
+  //     scales: {
+  //       y: {
+  //         beginAtZero: true,
+  //       },
+  //     },
+  //   },
+  // });
+}
+
 function configureSectionWorksDropped() {
   const section_works_dropped = document.querySelector(
     ".section-works-dropped",
@@ -236,7 +282,8 @@ function handlers() {
     } else if (event.target.value === "Month") {
       if (result_conditional_time !== false) {
         const { day, month_yer } = settingsTime(result_conditional_time);
-        schedule_user.getMonthList(month_yer);
+        const list_works = schedule_user.getMonthList(month_yer);
+        // generateGraficsMonth(list_works);
       }
       // console.log(event.target.value);
     }
