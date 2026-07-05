@@ -146,11 +146,12 @@ function generateGraficsWeek(datas, type_grafic = "session") {
 
 function generateGraficsMonth(datas, type_grafic = "session") {
   if (myChart) myChart.destroy();
-  console.log(datas);
-  const labels = ["week 1", "week 2", "week 3", "week 4"];
-  const information_weeks = [[], [], [], []];
-  console.log(datas);
-  for (let i = 0; i < 4; i++) {
+  const labels = [];
+  for (let i = 0; i < datas.length; i++) {
+    labels.push(`week ${i + 1}`);
+  }
+  let information_weeks = Array.from({ length: 5 }, () => []);
+  for (let i = 0; i < labels.length; i++) {
     if (datas[i] !== undefined) {
       const information_week = datas[i].map((list_work) => {
         return generate_datas(list_work);
@@ -158,36 +159,77 @@ function generateGraficsMonth(datas, type_grafic = "session") {
       information_weeks[i] = information_week;
     }
   }
-  console.log(information_weeks);
-  // let grafics = document.querySelector("#grafic-performance");
-  // myChart = new Chart(grafics, {
-  //   type: "bar",
-  //   data: {
-  //     labels: labels,
-  //     datasets: [
-  //       {
-  //         label: "number of completed works",
-  //         data: days_completed,
-  //         borderWidth: 1,
-  //       },
-  //       {
-  //         label: "number of dropped works",
-  //         data: days_dropped,
-  //       },
-  //       {
-  //         label: "number of incompleted works",
-  //         data: days_incompleted,
-  //       },
-  //     ],
-  //   },
-  //   options: {
-  //     scales: {
-  //       y: {
-  //         beginAtZero: true,
-  //       },
-  //     },
-  //   },
-  // });
+
+  let array_works_completed = [];
+  let array_works_incompleted = [];
+  let array_works_deleted = [];
+
+  for (let i = 0; i < labels.length; i++) {
+    let array_acumulator_works_completed = [];
+    let array_acumulator_works_incompleted = [];
+    let array_acumulator_works_deleted = [];
+    for (let j = 0; j < information_weeks[i].length; j++) {
+      array_acumulator_works_completed.push(
+        information_weeks[i][j].number_complete_works[0],
+      );
+      array_acumulator_works_incompleted.push(
+        information_weeks[i][j].number_incompleted_works[0],
+      );
+      array_acumulator_works_deleted.push(
+        information_weeks[i][j].number_deleted_workds[0],
+      );
+    }
+    array_works_completed.push(array_acumulator_works_completed);
+    array_works_incompleted.push(array_acumulator_works_incompleted);
+    array_works_deleted.push(array_acumulator_works_deleted);
+  }
+  const days_completed = array_works_completed.map((datas_works_completed) => {
+    return datas_works_completed.reduce((acumulator, value) => {
+      return acumulator + value;
+    });
+  });
+
+  const days_dropped = array_works_incompleted.map(
+    (datas_works_incompleted) => {
+      return datas_works_incompleted.reduce((acumulator, value) => {
+        return acumulator + value;
+      });
+    },
+  );
+  const days_incompleted = array_works_deleted.map((datas_works_deleted) => {
+    return datas_works_deleted.reduce((acumulator, value) => {
+      return acumulator + value;
+    });
+  });
+  let grafics = document.querySelector("#grafic-performance");
+  myChart = new Chart(grafics, {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: "number of completed works",
+          data: days_completed,
+          borderWidth: 1,
+        },
+        {
+          label: "number of dropped works",
+          data: days_dropped,
+        },
+        {
+          label: "number of incompleted works",
+          data: days_incompleted,
+        },
+      ],
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+      },
+    },
+  });
 }
 
 function configureSectionWorksDropped() {
@@ -283,7 +325,7 @@ function handlers() {
       if (result_conditional_time !== false) {
         const { day, month_yer } = settingsTime(result_conditional_time);
         const list_works = schedule_user.getMonthList(month_yer);
-        // generateGraficsMonth(list_works);
+        generateGraficsMonth(list_works);
       }
       // console.log(event.target.value);
     }

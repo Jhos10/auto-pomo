@@ -282,7 +282,7 @@ export class Schedule {
         list_days_week = [];
       } else {
         list_days_week.push(this.works_lists[date][count_days]);
-        console.log(list_days_week, count_days);
+        // console.log(list_days_week, count_days);
       }
       // console.log("count days before update", count_days);
       count_days += 1;
@@ -291,7 +291,7 @@ export class Schedule {
       // Agregar la lista retornada por la funcion en la variable list_weeks
       // Acceder al ultimo dia de la lista que retorna la función y guardarla en la variable y sumarle mas uno, este numero sera el referente para crear la nueva fecha.
     }
-    console.log(list_weeks);
+    // console.log(list_weeks);
     return list_weeks;
   }
 }
